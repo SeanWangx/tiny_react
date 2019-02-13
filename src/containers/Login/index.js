@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Input } from 'antd';
 
+import './index.css';
+
 class Login extends Component {
   render () {
     return (
