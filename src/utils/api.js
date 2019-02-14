@@ -4,8 +4,7 @@ class API {
   constructor () {
     let accessKey = storage.get('accessKey');
     let secretKey = storage.get('secretKey');
-    this.accessKey = accessKey;
-    this.secretKey = secretKey;
+    this.init(accessKey, secretKey);
   }
 
   init (accessKey, secretKey) {
