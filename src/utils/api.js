@@ -2,8 +2,8 @@ import storage from './storage';
 
 class API {
   constructor () {
-    let accessKey = storage.get('accessKey');
-    let secretKey = storage.get('secretKey');
+    let accessKey = storage.get('accessKey') || '';
+    let secretKey = storage.get('secretKey') || '';
     this.init(accessKey, secretKey);
   }
 
@@ -15,8 +15,8 @@ class API {
   }
 
   clear () {
-    this.accessKey = undefined;
-    this.secretKey = undefined;
+    this.accessKey = '';
+    this.secretKey = '';
     storage.clear();
   }
   
