@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, notification } from 'antd';
+import axios from 'axios';
 
 import api from '@/utils/api';
 
@@ -17,12 +18,12 @@ class Login extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  
+
   componentDidMount () {
-    const { accessKey, secretKey } = api.getMac();
+    // console.log(api);
     this.props.form.setFieldsValue({
-      'accessKey': accessKey,
-      'secretKey': secretKey
+      accessKey: api.accessKey,
+      secretKey: api.secretKey
     });
   }
 
@@ -30,10 +31,23 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
-        // TODO
-        openNotification('success', 'Login Successfully!');
-        api.init(values['accessKey'], values['secretKey']);
+        // console.log('Received values of form: ', values);
+        const { accessKey, secretKey } = values;
+        api.init(accessKey, secretKey);
+        let accessToken = api.getAccessToken({accessKey, secretKey}, '/buckets');
+        console.log(accessToken);
+        axios.get('http://rs.qbox.me/buckets', {
+          method: 'get',
+          headers: {
+            'Authorization': `QBox ${accessToken}`
+          }
+        }).then(res => {
+          console.log(res);
+          openNotification('success', 'Login Successfully!');
+        }).catch(err => {
+          console.error(err);
+          openNotification('error', 'Key Error!');
+        })
       }
     });
   }
