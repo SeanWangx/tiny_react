@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, notification } from 'antd';
+import { Redirect } from 'react-router-dom';
 
 import qiniu from '@/utils/qiniu';
 import { fetchBuckets } from '@/services';
@@ -37,6 +38,7 @@ class Login extends Component {
         fetchBuckets().then(res => {
           console.log(res);
           openNotification('success', 'Login Successfully!');
+          this.props.login({ accessKey, secretKey });
         }).catch(err => {
           console.error(err);
           openNotification('error', 'Key Error!');
@@ -46,6 +48,10 @@ class Login extends Component {
   }
 
   render () {
+    if (this.props.isAuth) {
+      return (<Redirect to="/" />);
+    }
+
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
