@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, notification } from 'antd';
-import axios from 'axios';
 
-import api from '@/utils/api';
+import qiniu from '@/utils/qiniu';
+import { fetchBuckets } from '@/services';
 
 import './index.css';
 
@@ -20,10 +20,10 @@ class Login extends Component {
   }
 
   componentDidMount () {
-    // console.log(api);
+    // console.log(qiniu);
     this.props.form.setFieldsValue({
-      accessKey: api.accessKey,
-      secretKey: api.secretKey
+      accessKey: qiniu.accessKey,
+      secretKey: qiniu.secretKey
     });
   }
 
@@ -33,15 +33,8 @@ class Login extends Component {
       if (!err) {
         // console.log('Received values of form: ', values);
         const { accessKey, secretKey } = values;
-        api.init(accessKey, secretKey);
-        let accessToken = api.getAccessToken({accessKey, secretKey}, '/buckets');
-        console.log(accessToken);
-        axios.get('http://rs.qbox.me/buckets', {
-          method: 'get',
-          headers: {
-            'Authorization': `QBox ${accessToken}`
-          }
-        }).then(res => {
+        qiniu.init(accessKey, secretKey);
+        fetchBuckets().then(res => {
           console.log(res);
           openNotification('success', 'Login Successfully!');
         }).catch(err => {

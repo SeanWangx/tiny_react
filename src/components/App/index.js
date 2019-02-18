@@ -4,10 +4,10 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
-import Login from '@/containers/Login';
-import Buckets from '@/containers/Buckets';
+import Login from '../Login';
+import Buckets from '../Buckets';
 
-import './App.css';
+import './index.css';
 
 class App extends Component {
   render() {

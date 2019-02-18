@@ -2,7 +2,7 @@ import Crypto from 'crypto';
 import storage from './storage';
 import { urlSafeBase64Encode } from './tools';
 
-class API {
+class QiNiu {
   constructor () {
     let accessKey = storage.get('accessKey', '');
     let secretKey = storage.get('secretKey', '');
@@ -35,7 +35,7 @@ let unique;
 
 function getInstance () {
   if (unique === undefined) {
-    unique = new API();
+    unique = new QiNiu();
   }
   return unique;
 }
