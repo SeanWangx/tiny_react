@@ -1,3 +1,5 @@
+import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Login from '../components/Login';
 import { addMac } from '../store/actions';
@@ -17,4 +19,16 @@ const LoginPage = connect(
   mapDispatchToProps
 )(Login);
 
-export default LoginPage;
+class Test extends Component {
+  render () {
+    const { isAuth } = this.props;
+    if (isAuth === true) return (<Redirect to="/" />);
+    return (<p>login</p>);
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Test);
+// export default LoginPage;
