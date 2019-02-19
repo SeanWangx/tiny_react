@@ -22,6 +22,13 @@ class QiNiu {
     storage.clear();
   }
 
+  getMac () {
+    return {
+      accessKey: this.accessKey,
+      secretKey: this.secretKey
+    };
+  }
+
   getAccessToken (url) {
     url = url + '\n';
     let sign = Crypto.createHmac('sha1', this.secretKey).update(url).digest();

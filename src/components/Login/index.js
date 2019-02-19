@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, notification } from 'antd';
-import { Redirect } from 'react-router-dom';
-
-import qiniu from '@/utils/qiniu';
-import { fetchBuckets } from '@/services';
-
+import { Form, Input, Button } from 'antd';
 import './index.css';
 
-const openNotification = (type, message) => {
-  notification[type]({
-    message,
-    duration: 2
-  });
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 4 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 20 },
+  },
 };
 
 class Login extends Component {
@@ -19,49 +18,15 @@ class Login extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-  componentDidMount () {
-    // console.log(qiniu);
-    this.props.form.setFieldsValue({
-      accessKey: qiniu.accessKey,
-      secretKey: qiniu.secretKey
-    });
-  }
-
   handleSubmit (e) {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        // console.log('Received values of form: ', values);
-        const { accessKey, secretKey } = values;
-        qiniu.init(accessKey, secretKey);
-        fetchBuckets().then(res => {
-          console.log(res);
-          openNotification('success', 'Login Successfully!');
-          this.props.login({ accessKey, secretKey });
-        }).catch(err => {
-          console.error(err);
-          openNotification('error', 'Key Error!');
-        })
+        this.props.fetchValues(values);
       }
     });
   }
-
   render () {
-    if (this.props.isAuth) {
-      return (<Redirect to="/" />);
-    }
-
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 4 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 20 },
-      },
-    };
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="Login">
