@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { notification } from 'antd';
 
 import Login from '../components/Login';
-import { addMac } from '../store/actions';
+import { addMac, refreshBuckets } from '../store/actions';
 import qiniu from '../utils/qiniu';
 import { fetchBuckets } from '../services';
 
@@ -15,6 +15,9 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = (dispatch, ownProps) => ({
   login: payload => {
     dispatch(addMac(payload));
+  },
+  refreshBuckets: payload => {
+    dispatch(refreshBuckets(payload));
   }
 })
 
@@ -35,6 +38,12 @@ class LoginPage extends Component {
     qiniu.init(accessKey, secretKey);
     fetchBuckets().then(res => {
       console.log(res);
+      const { data } = res;
+      this.props.refreshBuckets(data.map(item => ({
+        name: item,
+        zone: '',
+        domains: []
+      })));
       openNotification('success', 'Login Successfully!');
       this.props.login({ accessKey, secretKey });
     }).catch(err => {
