@@ -1,6 +1,7 @@
 import {
   ADD_MAC,
-  DELETE_MAC
+  DELETE_MAC,
+  REFRESH_BUCKETS
 } from './actions';
 import storage from '@/utils/storage';
 
@@ -20,23 +21,25 @@ export default function tinyApp (state = initialState, action) {
         secretKey: action.payload['secretKey'] || '',
         isAuth: true
       }
-      Object.keys(newState).forEach(key => storage.set(key, newState[key]))
-      return {
-        ...state,
-        ...newState
-      };
+      break;
     case DELETE_MAC:
       newState = {
         accessKey: '',
         secretKey: '',
         isAuth: false
       }
-      Object.keys(newState).forEach(key => storage.set(key, newState[key]))
-      return {
-        ...state,
-        ...newState
+      break;
+    case REFRESH_BUCKETS:
+      newState = {
+        buckets: action.buckets || []
       };
+      break;
     default:
       return state;
   }
+  Object.keys(newState).forEach(key => storage.set(key, newState[key]));
+  return {
+    ...state,
+    ...newState
+  };
 };
