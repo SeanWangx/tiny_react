@@ -1,20 +1,20 @@
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Buckets from '../components/Buckets';
-import { deleteMac } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({
   isAuth: state.isAuth
 })
 
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  logout: () => {
-    dispatch(deleteMac());
+class BucketsPage extends Component {
+  render () {
+    const { isAuth } = this.props;
+    if (isAuth !== true) return (<Redirect to="/login" />);
+    return (<Buckets />);
   }
-})
+}
 
-const BucketsPage = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Buckets);
-
-export default BucketsPage;
+export default connect(
+  mapStateToProps
+)(BucketsPage);
