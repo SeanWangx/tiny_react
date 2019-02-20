@@ -1,0 +1,38 @@
+.Buckets {
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.BucketsLayout {
+  height: 100%;
+  width: 100%;
+}
+
+.BucketsSider {
+  width: 100px;
+  background-color: #545c64;
+  color: #fff;
+}
+
+.BucketsList {
+  display: block;
+  width: 100%;
+  height: calc(100% - 40px);
+}
+
+.BucketsSetting {
+  display: block;
+  width: 100%;
+  height: 40px;
+  background: #545c64;
+  line-height: 40px;
+}
+
+.BucketsSettingBtn {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
