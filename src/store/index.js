@@ -1,5 +1,8 @@
 import { createStore } from 'redux';
 import tinyApp from './reducers';
-const store = createStore(tinyApp);
+const store = createStore(
+  tinyApp,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 export default store;

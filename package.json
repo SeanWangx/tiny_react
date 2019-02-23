@@ -33,6 +33,7 @@
     "babel-plugin-import": "^1.11.0",
     "customize-cra": "^0.2.11",
     "electron": "^4.0.4",
+    "electron-devtools-installer": "^2.2.4",
     "react-app-rewired": "^2.1.0",
     "redux-devtools": "^3.5.0"
   }
