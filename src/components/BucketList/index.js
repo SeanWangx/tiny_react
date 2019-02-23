@@ -1,11 +1,15 @@
 import React from 'react';
+import BucketItem from '../BucketItem';
+import './index.css';
 
 const BucketList = ({buckets}) => {
   return (
     <div className="bucket-list">
       {
         buckets.map((item, index) => {
-          return (<div key={index}>{item.name}</div>)
+          return (
+            <BucketItem key={index} text={item['name']} />
+          );
         })
       }
     </div>
