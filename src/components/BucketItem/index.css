@@ -11,5 +11,6 @@
   background-color: #4b5258;
 }
 .bucket-item.active {
-  background-color: #4b4b4b;
+  background-color: #4b5258;
+  font-weight: bold;
 }
