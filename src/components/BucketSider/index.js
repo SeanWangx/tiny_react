@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import FilterInput from '../FilterInput';
+import FilterList from '../../containers/FilterList';
 import './index.css';
 
 class BucketSider extends Component {
@@ -26,7 +27,7 @@ class BucketSider extends Component {
           <FilterInput onFilter={this.hanldeFilter} onAdd={this.handleAdd}/>
         </div>
         <div className="bucket-sider-item item-list">
-          list: {this.state.filterText}
+          <FilterList filterText={this.state.filterText}/>
         </div>
         <div className="bucket-sider-item item-setting">
           setting
