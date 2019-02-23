@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Icon } from 'antd';
 import FilterInput from '../FilterInput';
 import FilterList from '../../containers/FilterList';
 import './index.css';
@@ -30,7 +31,7 @@ class BucketSider extends Component {
           <FilterList filterText={this.state.filterText}/>
         </div>
         <div className="bucket-sider-item item-setting">
-          setting
+          <Icon type="setting" style={{'cursor': 'pointer'}}/>
         </div>
       </div>
     );
