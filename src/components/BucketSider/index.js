@@ -1,18 +1,39 @@
-import React from 'react';
+import React, { Component } from 'react';
+import FilterInput from '../FilterInput';
 import './index.css';
 
-const BucketSider = () => (
-  <div className="bucket-sider">
-    <div className="bucket-sider-item item-filter">
-      filter
-    </div>
-    <div className="bucket-sider-item item-list">
-      list
-    </div>
-    <div className="bucket-sider-item item-setting">
-      setting
-    </div>
-  </div>
-)
+class BucketSider extends Component {
+  constructor (props) {
+    super(props);
+    this.state = { filterText: '' };
+    this.hanldeFilter = this.handleFilter.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
+  }
+  handleFilter (e) {
+    e.preventDefault(e);
+    this.setState({
+      filterText: e.target.value
+    });
+  }
+  handleAdd (e) {
+    e.preventDefault();
+    console.log('[TODO]add bucket');
+  }
+  render () {
+    return (
+      <div className="bucket-sider">
+        <div className="bucket-sider-item item-filter">
+          <FilterInput onFilter={this.hanldeFilter} onAdd={this.handleAdd}/>
+        </div>
+        <div className="bucket-sider-item item-list">
+          list: {this.state.filterText}
+        </div>
+        <div className="bucket-sider-item item-setting">
+          setting
+        </div>
+      </div>
+    );
+  }
+}
 
 export default BucketSider;
