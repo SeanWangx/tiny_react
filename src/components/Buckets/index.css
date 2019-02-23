@@ -1,4 +1,4 @@
-.Buckets {
+.buckets-container {
   display: block;
   width: 100%;
   height: 100%;
@@ -6,12 +6,12 @@
   padding: 0;
 }
 
-.BucketsLayout {
+.buckets-layout {
   height: 100%;
   width: 100%;
 }
 
-.BucketsSider {
+.buckets-sider {
   width: 100px;
   background-color: #545c64;
   color: #fff;
