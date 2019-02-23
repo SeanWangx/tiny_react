@@ -23,9 +23,11 @@
 .bucket-sider-item.item-list {
   height: auto;
   max-height: calc(100% - 80px);
+  overflow-y: auto;
 }
 .bucket-sider-item.item-setting {
   position: absolute;
   left: 0;
   bottom: 0;
+  background-color: #4b5258;
 }
