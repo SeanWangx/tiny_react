@@ -1,10 +1,12 @@
 import React from 'react';
 import './index.css';
 
-const BucketItem = ({text}) => (
-  <div className="bucket-item">
-    {text}
-  </div>
-)
+const BucketItem = ({text, active, onSelect}) => {
+  return (
+    <div className={`bucket-item${active ? ' active' : ''}`} onClick={onSelect}>
+      {text}
+    </div>
+  );
+}
 
 export default BucketItem;
