@@ -5,7 +5,7 @@ import './index.css';
 class BucketList extends Component {
   constructor (props) {
     super(props);
-    this.state = { activeIndex: -1 };
+    this.state = { activeIndex: this.props.buckets.length > 0 ? 0 : -1 };
     this.handleSelect = this.handleSelect.bind(this);
   }
   handleSelect (index) {
