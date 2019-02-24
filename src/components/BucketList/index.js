@@ -11,7 +11,6 @@ class BucketList extends Component {
     this.handleSelect = this.handleSelect.bind(this);
   }
   static getDerivedStateFromProps (props, state) {
-    console.log(props);
     let ret = null;
     let len = props.buckets.length;
     let index = props.match.params.index;
@@ -30,7 +29,6 @@ class BucketList extends Component {
         props.history.push('/buckets');
       }
     }
-    console.log(state);
     return ret;
   }
   handleSelect (e, index) {
