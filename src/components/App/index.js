@@ -17,7 +17,8 @@ class App extends Component {
         <div className="App">
           <Switch>
             <Route path="/login" component={LoginPage} />
-            <Route path="/buckets" component={BucketsPage} />
+            <Route exact path="/buckets" component={BucketsPage} />
+            <Route path="/buckets/:index" component={BucketsPage} />
             <Route render={() => <Redirect to="/buckets" />} />
           </Switch>
         </div>
