@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import BucketItem from '../BucketItem';
 import './index.css';
 
@@ -34,5 +35,21 @@ class BucketList extends Component {
     );
   }
 }
+
+BucketList.propTypes = {
+  filterText: PropTypes.string,
+  buckets: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      zone: PropTypes.string,
+      domains: PropTypes.arrayOf(PropTypes.string)
+    })
+  )
+};
+
+BucketList.defaultProps = {
+  filterText: '',
+  buckets: []
+};
 
 export default BucketList;
