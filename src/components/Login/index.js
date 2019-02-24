@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input, Button } from 'antd';
+import PropTypes from 'prop-types';
 import './index.css';
 
 const formItemLayout = {
@@ -14,11 +15,11 @@ const formItemLayout = {
 };
 
 class Login extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleSubmit (e) {
+  handleSubmit(e) {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -26,7 +27,7 @@ class Login extends Component {
       }
     });
   }
-  render () {
+  render() {
     const { getFieldDecorator } = this.props.form;
     return (
       <div className="Login">
@@ -37,14 +38,14 @@ class Login extends Component {
               {getFieldDecorator('accessKey', {
                 rules: [{ required: true, message: 'Please input your Access Key!' }],
               })(
-                <Input placeholder="AccessKey"/>
+                <Input placeholder="AccessKey" />
               )}
             </Form.Item>
             <Form.Item label="SecretKey" {...formItemLayout}>
               {getFieldDecorator('secretKey', {
                 rules: [{ required: true, message: 'Please input your Secret Key!' }],
               })(
-                <Input.Password placeholder="SecretKey"/>
+                <Input.Password placeholder="SecretKey" />
               )}
             </Form.Item>
             <Form.Item>
@@ -56,5 +57,9 @@ class Login extends Component {
     );
   }
 }
+
+Login.propTypes = {
+  fetchValues: PropTypes.func.isRequired
+};
 
 export default Form.create({})(Login);
