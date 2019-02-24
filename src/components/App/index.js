@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   BrowserRouter as Router,
+  Redirect,
   Switch,
   Route
 } from 'react-router-dom';
@@ -15,10 +16,10 @@ class App extends Component {
       <Router>
         <div className="App">
           <Switch>
-            <Route exact path="/" component={BucketsPage} />
             <Route path="/login" component={LoginPage} />
-            <Route path="/buckets" component={BucketsPage} />
-            <Route component={BucketsPage} />
+            <Route exact path="/buckets" component={BucketsPage} />
+            <Route path="/buckets/:index" component={BucketsPage} />
+            <Route render={() => <Redirect to="/buckets" />} />
           </Switch>
         </div>
       </Router>

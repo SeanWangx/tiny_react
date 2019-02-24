@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout } from 'antd';
 import BucketSider from '../BucketSider';
+import BucketContent from '../BucketContent';
 import './index.css';
 
 const { Sider, Content } = Layout;
@@ -12,7 +13,7 @@ const Buckets = () => (
         <BucketSider />
       </Sider>
       <Content className="buckets-content">
-        Content
+        <BucketContent />
       </Content>
     </Layout>
   </div>

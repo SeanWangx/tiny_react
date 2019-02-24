@@ -1,21 +1,43 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import BucketItem from '../BucketItem';
 import './index.css';
 
 class BucketList extends Component {
   constructor (props) {
     super(props);
-    this.state = { activeIndex: this.props.buckets.length > 0 ? 0 : -1 };
+    this.state = { activeIndex: -1 };
     this.handleSelect = this.handleSelect.bind(this);
+  }
+  static getDerivedStateFromProps (props, state) {
+    let ret = null;
+    let len = props.buckets.length;
+    let index = props.match.params.index;
+    if (index === undefined) {
+      // /buckets
+      if (len > 0) {
+        props.history.push('/buckets/0');
+        ret = { activeIndex: 0 };
+      }
+    } else {
+      // /buckets/:index
+      index = parseInt(index);
+      if (index < len) {
+        ret = { activeIndex: index };
+      } else {
+        props.history.push('/buckets');
+      }
+    }
+    return ret;
   }
   handleSelect (e, index) {
     e.preventDefault();
     this.setState({
       activeIndex: index
-    })
+    });
+    this.props.history.push(`/buckets/${index}`);
   }
-
   render () {
     const { buckets, filterText } = this.props;
     return (
@@ -26,8 +48,9 @@ class BucketList extends Component {
               <BucketItem
                 show={item['name'].indexOf(filterText) !== -1}
                 active={index === this.state.activeIndex}
-                key={index} text={item['name']}
-                onSelect={(e) => this.handleSelect(e, index)}/>
+                text={item['name']}
+                key={index}
+                onSelect={e => this.handleSelect(e, index)}/>
             );
           })
         }
@@ -52,4 +75,4 @@ BucketList.defaultProps = {
   buckets: []
 };
 
-export default BucketList;
+export default withRouter(BucketList);
