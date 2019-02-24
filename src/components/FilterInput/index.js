@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Input, Icon } from 'antd';
 
 import './index.css';
@@ -22,5 +23,15 @@ const FilterInput = ({onFilter, onAdd}) => (
     </div>
   </div>
 )
+
+FilterInput.propTypes = {
+  onFilter: PropTypes.func,
+  onAdd: PropTypes.func
+};
+
+FilterInput.defaultProps = {
+  onFilter: null,
+  onAdd: null
+};
 
 export default FilterInput;
