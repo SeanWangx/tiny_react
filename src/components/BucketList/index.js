@@ -13,13 +13,7 @@ class BucketList extends Component {
       activeIndex: index
     })
   }
-  componentDidMount () {
-    if (this.props.buckets.length > 0) {
-      this.setState({
-        activeIndex: 0
-      });
-    }
-  }
+
   render () {
     const { buckets } = this.props;
     return (
