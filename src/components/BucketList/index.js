@@ -8,20 +8,25 @@ class BucketList extends Component {
     this.state = { activeIndex: this.props.buckets.length > 0 ? 0 : -1 };
     this.handleSelect = this.handleSelect.bind(this);
   }
-  handleSelect (index) {
+  handleSelect (e, index) {
+    e.preventDefault();
     this.setState({
       activeIndex: index
     })
   }
 
   render () {
-    const { buckets } = this.props;
+    const { buckets, filterText } = this.props;
     return (
       <div className="bucket-list">
         {
           buckets.map((item, index) => {
             return (
-              <BucketItem active={index === this.state.activeIndex} key={index} text={item['name']} onSelect={() => this.handleSelect(index)}/>
+              <BucketItem
+                show={item['name'].indexOf(filterText) !== -1}
+                active={index === this.state.activeIndex}
+                key={index} text={item['name']}
+                onSelect={(e) => this.handleSelect(e, index)}/>
             );
           })
         }
