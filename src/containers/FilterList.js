@@ -1,12 +1,9 @@
 import { connect } from 'react-redux';
 import BucketList from '../components/BucketList';
 
-const mapStateToProps = (state, ownProps) => {
-  const { filterText='' } = ownProps;
-  return {
-    buckets: filterText === '' ? state.buckets : state.buckets.filter(item => item.name.indexOf(filterText) !== -1)
-  };
-}
+const mapStateToProps = (state, ownProps) => ({
+  buckets: state.buckets
+})
 
 const mapDispatchToProps = (dispatch, ownProps) => ({})
 
