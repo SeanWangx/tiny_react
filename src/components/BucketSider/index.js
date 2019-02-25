@@ -27,11 +27,11 @@ class BucketSider extends Component {
         <div className="bucket-sider-item item-filter">
           <FilterInput onFilter={this.hanldeFilter} onAdd={this.handleAdd}/>
         </div>
-        <div className="bucket-sider-item item-list">
+        <div className="bucket-sider-item item-list" onClick={() => this.props.onViewChange('content')}>
           <FilterList filterText={this.state.filterText}/>
         </div>
         <div className="bucket-sider-item item-setting">
-          <Icon type="setting" style={{'cursor': 'pointer'}}/>
+          <Icon type="setting" style={{'cursor': 'pointer'}} onClick={() => this.props.onViewChange('setting')}/>
         </div>
       </div>
     );
