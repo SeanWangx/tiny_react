@@ -11,18 +11,20 @@ const BucketSetting = ({ onBack, logout, accessKey }) => (
     <div className="bucket-mac">
       <h3>密钥管理</h3>
       <div className="mac-item">
-        <div className="mac-item-label">Access Secret:</div>
+        <div className="mac-item-label">AccessKey:</div>
         <div className="mac-item-content">
           <Input disabled value={accessKey} />
         </div>
       </div>
       <div className="mac-item">
-        <div className="mac-item-label">Secret Secret:</div>
+        <div className="mac-item-label">SecretKey:</div>
         <div className="mac-item-content">
           <Input disabled value={accessKey.replace(/.+?/g, '*')} type="password"/>
         </div>
       </div>
-      <Button type="danger" onClick={logout}>Logout</Button>
+      <div className="mac-item">
+        <Button type="danger" onClick={logout}>Logout</Button>
+      </div>
     </div>
   </div>
 )
