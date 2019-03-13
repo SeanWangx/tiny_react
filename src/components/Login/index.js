@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { Form, Input, Button, notification } from 'antd';
 import PropTypes from 'prop-types';
-import { fetchBuckets } from '../../store/actions';
 import qiniu from '../../utils/qiniu';
 
 import './index.css';
@@ -88,17 +86,4 @@ Login.propTypes = {
   form: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  isAuth: state.isAuth
-})
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  fetchBuckets: payload => {
-    dispatch(fetchBuckets(payload));
-  }
-})
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Form.create({})(Login));
+export default Form.create({})(Login);

@@ -5,8 +5,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
-// import LoginPage from '@/containers/LoginPage';
-import Login from '@/components/Login';
+import Login from '@/containers/Login';
 import BucketsPage from '@/containers/BucketsPage';
 
 import './index.css';
