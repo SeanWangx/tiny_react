@@ -12,7 +12,7 @@ export default Form.create({
       if (value.length > 65 || value.length < 3) {
         callback('存储空间名称在4～64个字符之间');
       } else {
-        if (/^[0-9a-zA-Z\-_]$/g.test(value) === false) {
+        if (/^[a-zA-Z0-9_-]+$/g.test(value) === false) {
           callback('存储空间名称只能包含字母、数字、中划线、下划线');
         } else {
           callback();
@@ -35,6 +35,7 @@ export default Form.create({
           <Form layout="vertical">
             <Form.Item label="存储空间名称">
               {getFieldDecorator('bucket', {
+                initialValue: '',
                 rules: [
                   { required: true, message: '请输入存储空间名称！' },
                   { validator: this.validateBucket }
