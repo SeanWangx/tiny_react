@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import Sider from '../Sider';
 import BucketContent from '../BucketContent';
-import SettingPage from '../../containers/SettingPage';
+import Setting from '../../containers/Setting';
 
 import './index.css';
 
@@ -35,7 +35,7 @@ class Manager extends Component {
           <ContentContainer className="manager-content">
             {
               view === 'setting' ? (
-                <SettingPage onBack={() => this.viewChange('content')}/>
+                <Setting onBack={() => this.viewChange('content')}/>
               ) : (
                 <BucketContent />
               )

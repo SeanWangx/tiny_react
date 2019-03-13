@@ -4,11 +4,11 @@ import { Button, Input } from 'antd';
 import './index.css';
 
 const BucketSetting = ({ onBack, logout, accessKey }) => (
-  <div className="bucket-setting">
+  <div className="manager-setting">
     <div className="to-back">
       <Button icon="arrow-left" onClick={onBack}/>
     </div>
-    <div className="bucket-mac">
+    <div className="manager-mac">
       <h3>密钥管理</h3>
       <div className="mac-item">
         <div className="mac-item-label">AccessKey:</div>
