@@ -4,7 +4,7 @@ import { Layout } from 'antd';
 import PropTypes from 'prop-types';
 
 import Sider from '../Sider';
-import BucketContent from '../BucketContent';
+import Content from '../Content';
 import Setting from '../../containers/Setting';
 
 import './index.css';
@@ -37,7 +37,7 @@ class Manager extends Component {
               view === 'setting' ? (
                 <Setting onBack={() => this.viewChange('content')}/>
               ) : (
-                <BucketContent />
+                <Content />
               )
             }
           </ContentContainer>
