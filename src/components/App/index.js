@@ -5,7 +5,8 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
-import LoginPage from '@/containers/LoginPage';
+// import LoginPage from '@/containers/LoginPage';
+import Login from '@/components/Login';
 import BucketsPage from '@/containers/BucketsPage';
 
 import './index.css';
@@ -16,7 +17,7 @@ class App extends Component {
       <Router>
         <div className="App">
           <Switch>
-            <Route path="/login" component={LoginPage} />
+            <Route path="/login" component={Login} />
             <Route exact path="/buckets" component={BucketsPage} />
             <Route path="/buckets/:index" component={BucketsPage} />
             <Route render={() => <Redirect to="/buckets" />} />

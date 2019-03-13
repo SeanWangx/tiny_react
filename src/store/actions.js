@@ -1,3 +1,4 @@
+import { fetchBuckets as fetchBucketsAPI } from '../services';
 /**
  * action types
  */
@@ -36,4 +37,46 @@ export function modifyBucket (payload) {
     index,
     bucket // {name:string, zone:string, domains:array}
   };
+}
+
+// async fetch buckets
+export function fetchBuckets ({
+  accessKey,
+  secretKey,
+  successFn,
+  failFn
+}) {
+  const success = (dispatch, res, fn) => {
+    const { data } = res;
+    dispatch(
+      refreshBuckets(
+        data.map(item => ({
+          name: item,
+          zone: '',
+          domains: []
+        }))
+      )
+    );
+    dispatch(
+      addMac({
+        accessKey,
+        secretKey
+      })
+    );
+    fn();
+    return res;
+  }
+  const fail = (dispatch, err, fn) => {
+    fn();
+    return err;
+  }
+
+  return async dispatch => {
+    try {
+      const result = await fetchBucketsAPI();
+      return success(dispatch, result, successFn);
+    } catch (err) {
+      return fail(dispatch, err, failFn);
+    }
+  }
 }
