@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import BucketItem from '../BucketItem';
 import './index.css';
 
-class BucketList extends Component {
+class FilterList extends Component {
   constructor (props) {
     super(props);
     this.state = { activeIndex: -1 };
@@ -59,7 +59,7 @@ class BucketList extends Component {
   }
 }
 
-BucketList.propTypes = {
+FilterList.propTypes = {
   filterText: PropTypes.string,
   buckets: PropTypes.arrayOf(
     PropTypes.shape({
@@ -70,9 +70,9 @@ BucketList.propTypes = {
   )
 };
 
-BucketList.defaultProps = {
+FilterList.defaultProps = {
   filterText: '',
   buckets: []
 };
 
-export default withRouter(BucketList);
+export default withRouter(FilterList);

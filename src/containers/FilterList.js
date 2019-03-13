@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import BucketList from '../components/BucketList';
+import FilterList from '../components/FilterList';
 
 const mapStateToProps = (state, ownProps) => ({
   buckets: state.buckets
@@ -7,9 +7,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch, ownProps) => ({})
 
-const FilterList = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BucketList);
-
-export default FilterList;
+)(FilterList);
