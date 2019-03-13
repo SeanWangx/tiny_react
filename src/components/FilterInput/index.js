@@ -13,13 +13,13 @@ const btnStyle = {
   'cursor': 'pointer'
 };
 
-const FilterInput = ({onFilter, onAdd}) => (
+const FilterInput = ({ onFilter, onAdd }) => (
   <div className="filter-container">
     <div className="bucket-filter">
       <Input size="small" placeholder="Search" style={inputStyle} onChange={onFilter}/>
     </div>
     <div className="bucket-add">
-      <Icon type="plus-square" style={btnStyle} onClick={onAdd}/>
+      <Icon type="plus-square" style={btnStyle} onClick={onAdd} />
     </div>
   </div>
 )
@@ -35,3 +35,4 @@ FilterInput.defaultProps = {
 };
 
 export default FilterInput;
+
