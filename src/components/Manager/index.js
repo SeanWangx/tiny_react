@@ -3,13 +3,13 @@ import { Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
 import PropTypes from 'prop-types';
 
-import BucketSider from '../BucketSider';
+import Sider from '../Sider';
 import BucketContent from '../BucketContent';
 import SettingPage from '../../containers/SettingPage';
 
 import './index.css';
 
-const { Sider, Content } = Layout;
+const { Sider: SiderContainer, Content: ContentContainer } = Layout;
 
 class Manager extends Component {
   constructor (props) {
@@ -29,10 +29,10 @@ class Manager extends Component {
     ) : (
       <div className="manager-container">
         <Layout className="manager-layout">
-          <Sider className="manager-sider">
-            <BucketSider onViewChange={this.viewChange}/>
-          </Sider>
-          <Content className="manager-content">
+          <SiderContainer className="manager-sider">
+            <Sider onViewChange={this.viewChange}/>
+          </SiderContainer>
+          <ContentContainer className="manager-content">
             {
               view === 'setting' ? (
                 <SettingPage onBack={() => this.viewChange('content')}/>
@@ -40,7 +40,7 @@ class Manager extends Component {
                 <BucketContent />
               )
             }
-          </Content>
+          </ContentContainer>
         </Layout>
       </div>
     );
