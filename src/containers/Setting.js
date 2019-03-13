@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import BucketSetting from '../components/BucketSetting';
+import Setting from '../components/Setting';
 import { deleteMac } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({
@@ -12,9 +12,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   }
 })
 
-const SettingPage = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BucketSetting);
-
-export default SettingPage;
+)(Setting);

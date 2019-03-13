@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import './index.css';
 
-const BucketContent = ({match}) => {
+const Content = ({match}) => {
   let index = match.params.index;
   return (
     <div className="bucket-content">
@@ -14,4 +14,4 @@ const BucketContent = ({match}) => {
   );
 }
 
-export default withRouter(BucketContent);
+export default withRouter(Content);

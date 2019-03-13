@@ -5,6 +5,12 @@ import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import store from './store';
 
+console.todo = function (...args) {
+  console.log('===========[TODO]===========');
+  console.log(...args)
+  console.log('============================');
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <App />

@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Redirect } from 'react-router-dom';
+import { Form, Input, Button, notification } from 'antd';
 import PropTypes from 'prop-types';
+import qiniu from '../../utils/qiniu';
+
 import './index.css';
 
 const formItemLayout = {
@@ -14,22 +17,41 @@ const formItemLayout = {
   },
 };
 
+const openNotification = (type, message) => {
+  notification[type]({
+    message,
+    duration: 2
+  });
+}
+
 class Login extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleSubmit(e) {
+  async handleSubmit (e) {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
+      const { accessKey, secretKey } = values;
+      qiniu.init(accessKey, secretKey);
       if (!err) {
-        this.props.fetchValues(values);
+        this.props.fetchBuckets({
+          accessKey,
+          secretKey,
+          successFn: () => 
+          openNotification('success', 'Login Successfully!'),
+          failFn: () => openNotification('error', 'Key Error!')
+        })
       }
-    });
+    })
   }
-  render() {
-    const { getFieldDecorator } = this.props.form;
-    return (
+  render () {
+    const { isAuth, form } = this.props;
+    const { getFieldDecorator } = form;
+
+    return isAuth === true ? (
+      <Redirect to="/" />
+    ) : (
       <div className="Login">
         <div className="Login-Content">
           <h1>Tiny</h1>
@@ -59,7 +81,9 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  fetchValues: PropTypes.func.isRequired
+  isAuth: PropTypes.bool.isRequired,
+  fetchBuckets: PropTypes.func.isRequired,
+  form: PropTypes.object.isRequired
 };
 
 export default Form.create({})(Login);

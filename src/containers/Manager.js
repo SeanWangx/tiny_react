@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import FilterList from '../components/FilterList';
+import Manager from '../components/Manager';
 
 const mapStateToProps = (state, ownProps) => ({
-  buckets: state.buckets
+  isAuth: state.isAuth
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({})
@@ -10,4 +10,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({})
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(FilterList);
+)(Manager);

@@ -1,4 +1,4 @@
-.bucket-sider {
+.sider-content {
   display: block;
   position: relative;
   width: 100%;
@@ -7,7 +7,7 @@
   padding: 0;
 }
 
-.bucket-sider-item {
+.sider-item {
   display: block;
   position: relative;
   width: 100%;
@@ -17,17 +17,17 @@
   font-size: 16px;
 }
 
-.bucket-sider-item.item-filter {
+.sider-item.item-filter {
   background-color: #3d4348;
 }
-.bucket-sider-item.item-list {
+.sider-item.item-list {
   height: auto;
   max-height: calc(100% - 80px);
   overflow-y: auto;
   box-sizing: border-box;
   padding: 4px 0;
 }
-.bucket-sider-item.item-setting {
+.sider-item.item-setting {
   position: absolute;
   left: 0;
   bottom: 0;
