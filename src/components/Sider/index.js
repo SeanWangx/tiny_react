@@ -39,8 +39,9 @@ class Sider extends Component {
     });
   }
   handleCancel = () => {
+    const { form } = this.formRef.props;
     this.toggleVisible(false);
-    console.todo('handle cancel');
+    form.resetFields();
   }
   saveFormRef = formRef => {
     this.formRef = formRef;

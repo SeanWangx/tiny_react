@@ -27,6 +27,7 @@ export default Form.create({
       return (
         <Modal
           title={Title}
+          closable={false}
           okText="确认"
           cancelText="取消"
           visible={visible}
