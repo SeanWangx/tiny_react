@@ -1,4 +1,7 @@
-import { fetchBuckets as fetchBucketsAPI } from '../services';
+import {
+  fetchBuckets as fetchBucketsAPI,
+  createBucket as createBucketAPI
+} from '../services';
 /**
  * action types
  */
@@ -77,6 +80,20 @@ export function fetchBuckets ({
       return success(dispatch, result, successFn);
     } catch (err) {
       return fail(dispatch, err, failFn);
+    }
+  }
+}
+
+// async create buckets
+export function createBucket ({
+  bucket,
+  region
+}) {
+  return async dispatch => {
+    try {
+      await createBucketAPI();
+    } catch (err) {
+      console.error(err);
     }
   }
 }
