@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Icon } from 'antd';
 import FilterInput from '../FilterInput';
 import FilterList from '../../containers/FilterList';
@@ -33,9 +34,14 @@ class Sider extends Component {
       if (err) {
         return;
       }
-      console.todo(values);
-      form.resetFields();
-      this.toggleVisible(false);
+      let { bucket, region } = values;
+      this.props.createBucket({ bucket, region }).then(res => {
+        form.resetFields();
+        this.toggleVisible(false);
+        this.props.fetchBuckets();
+      }).catch(err => {
+        console.error(err);
+      })
     });
   }
   handleCancel = () => {
@@ -68,5 +74,10 @@ class Sider extends Component {
     );
   }
 }
+
+Sider.propTypes = {
+  fetchBuckets: PropTypes.func.isRequired,
+  createBucket: PropTypes.func.isRequired
+};
 
 export default Sider;

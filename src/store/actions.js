@@ -61,15 +61,8 @@ export function fetchBuckets () {
 }
 
 // async create buckets
-export function createBucket ({
-  bucket,
-  region
-}) {
-  return async dispatch => {
-    try {
-      await createBucketAPI();
-    } catch (err) {
-      console.error(err);
-    }
+export function createBucket ({ bucket, region }) {
+  return dispatch => {
+    return createBucketAPI({ bucket, region });
   }
 }
