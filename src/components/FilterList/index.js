@@ -25,18 +25,18 @@ class FilterList extends Component {
     let len = props.buckets.length;
     let index = props.match.params.index;
     if (index === undefined) {
-      // /buckets
+      // /manager
       if (len > 0) {
-        props.history.push('/buckets/0');
+        props.history.push('/manager/0');
         ret = { activeIndex: 0 };
       }
     } else {
-      // /buckets/:index
+      // /manager/:index
       index = parseInt(index);
       if (index < len) {
         ret = { activeIndex: index };
       } else {
-        props.history.push('/buckets');
+        props.history.push('/manager');
       }
     }
     return ret;
@@ -46,7 +46,7 @@ class FilterList extends Component {
     this.setState({
       activeIndex: index
     });
-    this.props.history.push(`/buckets/${index}`);
+    this.props.history.push(`/manager/${index}`);
   }
   handleDelete (e, bucket) {
     e.preventDefault();
