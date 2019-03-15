@@ -7,8 +7,8 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  fetchBuckets: payload => {
-    return dispatch(fetchBuckets(payload));
+  fetchBuckets: () => {
+    return dispatch(fetchBuckets());
   },
   addMac: payload => {
     return dispatch(addMac(payload));

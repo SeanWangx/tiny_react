@@ -35,7 +35,7 @@ class Login extends Component {
       const { accessKey, secretKey } = values;
       qiniu.init(accessKey, secretKey);
       if (!err) {
-        this.props.fetchBuckets({ accessKey, secretKey }).then(res => {
+        this.props.fetchBuckets().then(res => {
           this.props.addMac({ accessKey, secretKey });
           openNotification('success', 'Login Successfully!')
         }).catch(err => {
