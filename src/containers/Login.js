@@ -1,14 +1,17 @@
 import { connect } from 'react-redux';
 import Login from '../components/Login';
-import { fetchBuckets } from '../store/actions';
+import { addMac, fetchBuckets } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({
   isAuth: state.isAuth
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  fetchBuckets: payload => {
-    dispatch(fetchBuckets(payload));
+  fetchBuckets: () => {
+    return dispatch(fetchBuckets());
+  },
+  addMac: payload => {
+    return dispatch(addMac(payload));
   }
 })
 

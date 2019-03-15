@@ -29,18 +29,18 @@ class Login extends Component {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  async handleSubmit (e) {
+  handleSubmit (e) {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       const { accessKey, secretKey } = values;
       qiniu.init(accessKey, secretKey);
       if (!err) {
-        this.props.fetchBuckets({
-          accessKey,
-          secretKey,
-          successFn: () => 
-          openNotification('success', 'Login Successfully!'),
-          failFn: () => openNotification('error', 'Key Error!')
+        this.props.fetchBuckets().then(res => {
+          this.props.addMac({ accessKey, secretKey });
+          openNotification('success', 'Login Successfully!')
+        }).catch(err => {
+          console.error(err);
+          openNotification('error', 'Key Error!')
         })
       }
     })
@@ -83,6 +83,7 @@ class Login extends Component {
 Login.propTypes = {
   isAuth: PropTypes.bool.isRequired,
   fetchBuckets: PropTypes.func.isRequired,
+  addMac: PropTypes.func.isRequired,
   form: PropTypes.object.isRequired
 };
 

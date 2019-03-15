@@ -1,4 +1,7 @@
-import { fetchBuckets as fetchBucketsAPI } from '../services';
+import {
+  fetchBuckets as fetchBucketsAPI,
+  createBucket as createBucketAPI
+} from '../services';
 /**
  * action types
  */
@@ -40,43 +43,26 @@ export function modifyBucket (payload) {
 }
 
 // async fetch buckets
-export function fetchBuckets ({
-  accessKey,
-  secretKey,
-  successFn,
-  failFn
-}) {
-  const success = (dispatch, res, fn) => {
-    const { data } = res;
-    dispatch(
-      refreshBuckets(
-        data.map(item => ({
-          name: item,
-          zone: '',
-          domains: []
-        }))
-      )
-    );
-    dispatch(
-      addMac({
-        accessKey,
-        secretKey
-      })
-    );
-    fn();
-    return res;
+export function fetchBuckets () {
+  return dispatch => {
+    return fetchBucketsAPI().then(res => {
+      const { data } = res;
+      dispatch(refreshBuckets(data.map(item => ({
+        name: item,
+        zone: '',
+        domains: []
+      }))));
+      return Promise.resolve(res);
+    }).catch(err => {
+      console.error(err);
+      return Promise.reject(err);
+    })
   }
-  const fail = (dispatch, err, fn) => {
-    fn();
-    return err;
-  }
+}
 
-  return async dispatch => {
-    try {
-      const result = await fetchBucketsAPI();
-      return success(dispatch, result, successFn);
-    } catch (err) {
-      return fail(dispatch, err, failFn);
-    }
+// async create buckets
+export function createBucket ({ bucket, region }) {
+  return dispatch => {
+    return createBucketAPI({ bucket, region });
   }
 }

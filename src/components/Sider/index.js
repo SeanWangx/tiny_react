@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { Icon, Modal } from 'antd';
+import PropTypes from 'prop-types';
+import { Icon } from 'antd';
 import FilterInput from '../FilterInput';
 import FilterList from '../../containers/FilterList';
+import CreateBucket from '../CreateBucket';
+
 import './index.css';
 
 class Sider extends Component {
@@ -12,12 +15,6 @@ class Sider extends Component {
       visible: false
     };
     this.hanldeFilter = this.handleFilter.bind(this);
-    this.toggleVisible = this.toggleVisible.bind(this);
-    this.showModal = this.showModal.bind(this);
-    this.handleOk = this.handleOk.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
-  
-    this.handleAdd = this.handleAdd.bind(this);
   }
   handleFilter (e) {
     e.preventDefault(e);
@@ -25,26 +22,35 @@ class Sider extends Component {
       filterText: e.target.value
     });
   }
-  toggleVisible (visible = false) {
+  toggleVisible = (visible = false) => {
     this.setState({ visible });
   }
-  showModal (e) {
-    e.preventDefault();
+  showModal = () => {
     this.toggleVisible(true);
   }
-  handleOk (e) {
-    e.preventDefault();
-    this.toggleVisible(false);
-    console.todo('handle ok');
+  handleCreate = () => {
+    const { form } = this.formRef.props;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+      let { bucket, region } = values;
+      this.props.createBucket({ bucket, region }).then(res => {
+        form.resetFields();
+        this.toggleVisible(false);
+        this.props.fetchBuckets();
+      }).catch(err => {
+        console.error(err);
+      })
+    });
   }
-  handleCancel (e) {
-    e.preventDefault();
+  handleCancel = () => {
+    const { form } = this.formRef.props;
     this.toggleVisible(false);
-    console.todo('handle cancel');
+    form.resetFields();
   }
-  handleAdd (e) {
-    e.preventDefault();
-    console.todo('add bucket');
+  saveFormRef = formRef => {
+    this.formRef = formRef;
   }
 
   render () {
@@ -52,12 +58,11 @@ class Sider extends Component {
       <div className="sider-content">
         <div className="sider-item item-filter">
           <FilterInput onFilter={this.hanldeFilter} onAdd={this.showModal}/>
-          <Modal
-            title="create bucket"
+          <CreateBucket
+            wrappedComponentRef={this.saveFormRef}
             visible={this.state.visible}
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}>
-          </Modal>
+            onCancel={this.handleCancel}
+            onCreate={this.handleCreate} />
         </div>
         <div className="sider-item item-list" onClick={() => this.props.onViewChange('content')}>
           <FilterList filterText={this.state.filterText}/>
@@ -69,5 +74,10 @@ class Sider extends Component {
     );
   }
 }
+
+Sider.propTypes = {
+  fetchBuckets: PropTypes.func.isRequired,
+  createBucket: PropTypes.func.isRequired
+};
 
 export default Sider;

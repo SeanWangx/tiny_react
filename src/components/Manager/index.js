@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { Layout } from 'antd';
 import PropTypes from 'prop-types';
 
-import Sider from '../Sider';
+import Sider from '../../containers/Sider';
 import Content from '../Content';
 import Setting from '../../containers/Setting';
 
