@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Icon } from 'antd';
 import './index.css';
 
 const BucketItem = ({
@@ -10,7 +11,10 @@ const BucketItem = ({
 }) => {
   return show === true ? (
     <div className={`bucket-item${active ? ' active' : ''}`} onClick={onSelect}>
-      {text}
+      <div className="item-text">{text}</div>
+      <div className="delete-btn">
+        <Icon type="close-circle" />
+      </div>
     </div>
   ) : null;
 }
