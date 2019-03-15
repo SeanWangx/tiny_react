@@ -1,14 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { notification } from 'antd';
 import BucketItem from '../BucketItem';
 import './index.css';
+
+
+const openNotification = (type, message) => {
+  notification[type]({
+    message,
+    duration: 2
+  });
+}
 
 class FilterList extends Component {
   constructor (props) {
     super(props);
     this.state = { activeIndex: -1 };
     this.handleSelect = this.handleSelect.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
   static getDerivedStateFromProps (props, state) {
     let ret = null;
@@ -38,6 +48,19 @@ class FilterList extends Component {
     });
     this.props.history.push(`/buckets/${index}`);
   }
+  handleDelete (e, bucket) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.todo(bucket);
+    this.props.deleteBucket(bucket).then(res => {
+      openNotification('success', 'Create new bucket Successfully!');
+      return this.props.fetchBuckets();
+    }).then(() => {
+      console.todo(this.props);
+    }).catch(err => {
+      console.error(err);
+    })
+  }
   render () {
     const { buckets, filterText } = this.props;
     return (
@@ -50,7 +73,8 @@ class FilterList extends Component {
                 active={index === this.state.activeIndex}
                 text={item['name']}
                 key={index}
-                onSelect={e => this.handleSelect(e, index)}/>
+                onSelect={e => this.handleSelect(e, index)}
+                onDelete={e => this.handleDelete(e, item['name'])}/>
             );
           })
         }
@@ -67,7 +91,9 @@ FilterList.propTypes = {
       zone: PropTypes.string,
       domains: PropTypes.arrayOf(PropTypes.string)
     })
-  )
+  ),
+  fetchBuckets: PropTypes.func.isRequired,
+  deleteBucket: PropTypes.func.isRequired
 };
 
 FilterList.defaultProps = {
