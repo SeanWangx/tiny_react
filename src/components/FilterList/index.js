@@ -23,7 +23,7 @@ class FilterList extends Component {
   static getDerivedStateFromProps (props, state) {
     let ret = null;
     let len = props.buckets.length;
-    let index = props.match.params.index;
+    let index = props.match.params.bucket;
     if (index === undefined) {
       // /manager
       if (len > 0) {
