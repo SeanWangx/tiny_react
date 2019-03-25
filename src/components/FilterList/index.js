@@ -80,6 +80,7 @@ class FilterList extends Component {
         <Modal
           title={Title}
           closable={false}
+          maskClosable={false}
           okText="确认"
           cancelText="取消"
           visible={this.state.visible}
