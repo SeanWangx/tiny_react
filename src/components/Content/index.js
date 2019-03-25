@@ -1,17 +1,15 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 
 import './index.css';
 
-const Content = ({match}) => {
-  let bucket = match.params.bucket;
+const Content = ({ selected = '' }) => {
   return (
     <div className="bucket-content">
       {
-        bucket === undefined ? 'No buckets!' : bucket
+        selected === '' ? 'No buckets!' : selected
       }
     </div>
   );
 }
 
-export default withRouter(Content);
+export default Content;
