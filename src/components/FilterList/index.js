@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { notification } from 'antd';
+import { notification, Modal } from 'antd';
 import BucketItem from '../BucketItem';
 import './index.css';
 
@@ -13,22 +13,44 @@ const openNotification = (type, message) => {
 
 const getSelectedIndex = (buckets, selected) => buckets.reduce((prev, cur, index) => cur['name'] === selected ? index : prev, -1);
 
+const Title = <div style={{textAlign: 'center'}}>删除存储空间</div>
+
 class FilterList extends Component {
   constructor (props) {
     super(props);
-    this.state = { activeIndex: -1 };
+    this.state = {
+      activeIndex: -1,
+      visible: false,
+      waitToBeDeleted: ''
+    };
     this.handleSelect = this.handleSelect.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.handleOk = this.handleOk.bind(this);
   }
   handleSelect (e, bucket) {
     e.preventDefault();
-    e.stopPropagation();
     this.props.selectBucket(bucket);
   }
   handleDelete (e, bucket) {
     e.preventDefault();
     e.stopPropagation();
-    console.todo('handleDelete', bucket);
+    this.setState({
+      visible: true,
+      waitToBeDeleted: bucket
+    });
+  }
+  closeModal (e) {
+    if (e) e.preventDefault();
+    this.setState({
+      visible: false,
+      waitToBeDeleted: ''
+    });
+  }
+  handleOk (e) {
+    e.preventDefault();
+    console.todo('handleOk to delete', this.state.waitToBeDeleted);
+    this.closeModal();
     /* this.props.deleteBucket(bucket).then(res => {
       openNotification('success', 'Create new bucket Successfully!');
       return this.props.fetchBuckets();
@@ -55,6 +77,16 @@ class FilterList extends Component {
             );
           })
         }
+        <Modal
+          title={Title}
+          closable={false}
+          okText="确认"
+          cancelText="取消"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.closeModal}>
+          是否确认删除存储空间：{this.state.waitToBeDeleted}?
+        </Modal>
       </div>
     );
   }
