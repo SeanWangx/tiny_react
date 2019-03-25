@@ -1,6 +1,7 @@
 import {
   fetchBuckets as fetchBucketsAPI,
-  createBucket as createBucketAPI
+  createBucket as createBucketAPI,
+  deleteBucket as deleteBucketAPI
 } from '../services';
 /**
  * action types
@@ -64,5 +65,12 @@ export function fetchBuckets () {
 export function createBucket ({ bucket, region }) {
   return dispatch => {
     return createBucketAPI({ bucket, region });
+  }
+}
+
+// async delete bucket
+export function deleteBucket (bucket) {
+  return dispathch => {
+    return deleteBucketAPI(bucket);
   }
 }

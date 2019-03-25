@@ -4,11 +4,11 @@ import { withRouter } from 'react-router-dom';
 import './index.css';
 
 const Content = ({match}) => {
-  let index = match.params.index;
+  let bucket = match.params.bucket;
   return (
     <div className="bucket-content">
       {
-        index === undefined ? 'No buckets!' : index
+        bucket === undefined ? 'No buckets!' : bucket
       }
     </div>
   );

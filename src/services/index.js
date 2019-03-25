@@ -22,3 +22,13 @@ export function createBucket ({ bucket, region }) {
     }
   });
 }
+
+export function deleteBucket (bucket) {
+  let accessToken = qiniu.getAccessToken(`/drop/${bucket}`);
+  return axios.post(`http://rs.qiniu.com/drop/${bucket}`, null, {
+    method: 'post',
+    headers: {
+      'Authorization': `QBox ${accessToken}`
+    }
+  });
+}
