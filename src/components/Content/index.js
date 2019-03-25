@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import './index.css';
 
-const Content = ({ selected = '' }) => {
+const Content = ({ selected }) => {
   return (
     <div className="bucket-content">
       {
@@ -11,5 +12,13 @@ const Content = ({ selected = '' }) => {
     </div>
   );
 }
+
+Content.propTypes = {
+  selected: PropTypes.string
+};
+
+Content.defaultProps = {
+  selected: ''
+};
 
 export default Content;
