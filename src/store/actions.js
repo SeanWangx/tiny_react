@@ -10,6 +10,7 @@ export const ADD_MAC = 'ADD_MAC';
 export const DELETE_MAC = 'DELETE_MAC';
 export const REFRESH_BUCKETS = 'REFRESH_BUCKETS';
 export const MODIFY_BUCKET = 'MODIFY_BUCKET';
+export const SELECT_BUCKET = 'SELECT_BUCKET';
 
 /**
  * action creators
@@ -25,6 +26,13 @@ export function deleteMac () {
   return {
     type: DELETE_MAC
   };
+}
+
+export function selectBucket (bucket) {
+  return {
+    type: SELECT_BUCKET,
+    bucket
+  }
 }
 
 export function refreshBuckets (buckets) {
