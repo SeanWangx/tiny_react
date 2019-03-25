@@ -20,7 +20,8 @@ class FilterList extends Component {
     super(props);
     this.state = {
       visible: false,
-      waitToBeDeleted: ''
+      waitToBeDeleted: '',
+      confirmLoading: false
     };
     this.handleSelect = this.handleSelect.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
@@ -43,21 +44,29 @@ class FilterList extends Component {
     if (e) e.preventDefault();
     this.setState({
       visible: false,
-      waitToBeDeleted: ''
+      waitToBeDeleted: '',
+      confirmLoading: false
     });
   }
   handleOk (e) {
     e.preventDefault();
-    console.todo('handleOk to delete', this.state.waitToBeDeleted);
-    this.closeModal();
-    /* this.props.deleteBucket(bucket).then(res => {
-      openNotification('success', 'Create new bucket Successfully!');
-      return this.props.fetchBuckets();
+    this.setState({ confirmLoading: true });
+
+    let { waitToBeDeleted } = this.state;
+    let { selected, buckets, selectBucket, deleteBucket, fetchBuckets } = this.props;
+    deleteBucket(waitToBeDeleted).then(res => {
+      this.closeModal();
+      openNotification('success', `Delete ${waitToBeDeleted} successfully!`);
+      return fetchBuckets();
     }).then(() => {
-      console.todo(this.props);
+      if (waitToBeDeleted === selected) {
+        selectBucket(buckets.length === 0 ? '': buckets[0]['name']);
+      }
     }).catch(err => {
+      this.closeModal();
+      openNotification('error', `Delete ${waitToBeDeleted} failed!`);
       console.error(err);
-    }) */
+    });
   }
 
   componentDidMount () {
@@ -97,7 +106,9 @@ class FilterList extends Component {
           cancelText="取消"
           visible={this.state.visible}
           onOk={this.handleOk}
-          onCancel={this.closeModal}>
+          onCancel={this.closeModal}
+          confirmLoading={this.state.confirmLoading}
+          cancelButtonProps={{ disabled: this.state.confirmLoading }}>
           是否确认删除存储空间：{this.state.waitToBeDeleted}?
         </Modal>
       </div>
