@@ -21,18 +21,21 @@ export default Form.create({
     }
 
     render () {
-      const { visible, onCancel, onCreate, form } = this.props;
+      const { visible, loading, onCancel, onCreate, form } = this.props;
       const { getFieldDecorator } = form;
 
       return (
         <Modal
           title={Title}
           closable={false}
+          maskClosable={false}
           okText="确认"
           cancelText="取消"
           visible={visible}
+          confirmLoading={loading}
           onOk={onCreate}
-          onCancel={onCancel}>
+          onCancel={onCancel}
+          cancelButtonProps={{ disabled: loading }}>
           <Form layout="vertical">
             <Form.Item label="存储空间名称">
               {getFieldDecorator('bucket', {
