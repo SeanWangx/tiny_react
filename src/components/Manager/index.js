@@ -4,7 +4,7 @@ import { Layout } from 'antd';
 import PropTypes from 'prop-types';
 
 import Sider from '../../containers/Sider';
-import Content from '../Content';
+import Content from '../../containers/Content';
 import Setting from '../../containers/Setting';
 
 import './index.css';
