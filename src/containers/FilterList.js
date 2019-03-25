@@ -3,7 +3,8 @@ import FilterList from '../components/FilterList';
 import { deleteBucket, fetchBuckets } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({
-  buckets: state.buckets
+  buckets: state.buckets,
+  selected: state.selected
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

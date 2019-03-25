@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
 import { notification } from 'antd';
 import BucketItem from '../BucketItem';
 import './index.css';
-
 
 const openNotification = (type, message) => {
   notification[type]({
@@ -13,6 +11,8 @@ const openNotification = (type, message) => {
   });
 }
 
+const getSelectedIndex = (buckets, selected) => buckets.reduce((prev, cur, index) => cur['name'] === selected ? index : prev, -1);
+
 class FilterList extends Component {
   constructor (props) {
     super(props);
@@ -20,49 +20,29 @@ class FilterList extends Component {
     this.handleSelect = this.handleSelect.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
   }
-  static getDerivedStateFromProps (props, state) {
-    let ret = null;
-    let len = props.buckets.length;
-    let index = props.match.params.bucket;
-    if (index === undefined) {
-      // /manager
-      if (len > 0) {
-        props.history.push('/manager/0');
-        ret = { activeIndex: 0 };
-      }
-    } else {
-      // /manager/:index
-      index = parseInt(index);
-      if (index < len) {
-        ret = { activeIndex: index };
-      } else {
-        props.history.push('/manager');
-      }
-    }
-    return ret;
-  }
-  handleSelect (e, index) {
+  handleSelect (e, bucket) {
     e.preventDefault();
-    this.setState({
+    e.stopPropagation();
+    console.todo('handleSelect', bucket);
+    /* this.setState({
       activeIndex: index
-    });
-    this.props.history.push(`/manager/${index}`);
+    }); */
   }
   handleDelete (e, bucket) {
     e.preventDefault();
     e.stopPropagation();
-    console.todo(bucket);
-    this.props.deleteBucket(bucket).then(res => {
+    console.todo('handleDelete', bucket);
+    /* this.props.deleteBucket(bucket).then(res => {
       openNotification('success', 'Create new bucket Successfully!');
       return this.props.fetchBuckets();
     }).then(() => {
       console.todo(this.props);
     }).catch(err => {
       console.error(err);
-    })
+    }) */
   }
   render () {
-    const { buckets, filterText } = this.props;
+    const { buckets, filterText, selected } = this.props;
     return (
       <div className="bucket-list">
         {
@@ -70,10 +50,10 @@ class FilterList extends Component {
             return (
               <BucketItem
                 show={item['name'].indexOf(filterText) !== -1}
-                active={index === this.state.activeIndex}
+                active={item['name'] === selected}
                 text={item['name']}
                 key={index}
-                onSelect={e => this.handleSelect(e, index)}
+                onSelect={e => this.handleSelect(e, item['name'])}
                 onDelete={e => this.handleDelete(e, item['name'])}/>
             );
           })
@@ -85,6 +65,7 @@ class FilterList extends Component {
 
 FilterList.propTypes = {
   filterText: PropTypes.string,
+  selected: PropTypes.string,
   buckets: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -98,7 +79,8 @@ FilterList.propTypes = {
 
 FilterList.defaultProps = {
   filterText: '',
+  selected: '',
   buckets: []
 };
 
-export default withRouter(FilterList);
+export default FilterList;
