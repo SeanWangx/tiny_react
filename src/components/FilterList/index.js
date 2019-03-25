@@ -23,10 +23,7 @@ class FilterList extends Component {
   handleSelect (e, bucket) {
     e.preventDefault();
     e.stopPropagation();
-    console.todo('handleSelect', bucket);
-    /* this.setState({
-      activeIndex: index
-    }); */
+    this.props.selectBucket(bucket);
   }
   handleDelete (e, bucket) {
     e.preventDefault();
@@ -74,7 +71,8 @@ FilterList.propTypes = {
     })
   ),
   fetchBuckets: PropTypes.func.isRequired,
-  deleteBucket: PropTypes.func.isRequired
+  deleteBucket: PropTypes.func.isRequired,
+  selectBucket: PropTypes.func.isRequired
 };
 
 FilterList.defaultProps = {
