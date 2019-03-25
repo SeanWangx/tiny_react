@@ -57,16 +57,20 @@ class FilterList extends Component {
     deleteBucket(waitToBeDeleted).then(res => {
       this.closeModal();
       openNotification('success', `Delete ${waitToBeDeleted} successfully!`);
-      return fetchBuckets();
-    }).then(() => {
-      if (waitToBeDeleted === selected) {
-        selectBucket(buckets.length === 0 ? '': buckets[0]['name']);
-      }
     }).catch(err => {
       this.closeModal();
       openNotification('error', `Delete ${waitToBeDeleted} failed!`);
       console.error(err);
-    });
+    }).then(() => {
+      fetchBuckets().then(() => {
+        if (waitToBeDeleted === selected) {
+          selectBucket(buckets.length === 0 ? '': buckets[0]['name']);
+        }
+      }).catch(err => {
+        openNotification('error', `Fetch buckets failed!`);
+        console.error(err);
+      });
+    })
   }
 
   componentDidMount () {
