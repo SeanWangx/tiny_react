@@ -19,7 +19,6 @@ class App extends Component {
           <Switch>
             <Route path="/login" component={Login} />
             <Route exact path="/manager" component={Manager} />
-            <Route path="/manager/:bucket" component={Manager} />
             <Route render={() => <Redirect to="/manager" />} />
           </Switch>
         </div>

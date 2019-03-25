@@ -1,18 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Icon } from 'antd';
+import { Icon, notification } from 'antd';
 import FilterInput from '../FilterInput';
 import FilterList from '../../containers/FilterList';
 import CreateBucket from '../CreateBucket';
 
 import './index.css';
 
+const openNotification = (type, message) => {
+  notification[type]({
+    message,
+    duration: 2
+  });
+}
+
 class Sider extends Component {
   constructor (props) {
     super(props);
     this.state = {
       filterText: '',
-      visible: false
+      visible: false,
+      confirmLoading: false
     };
     this.hanldeFilter = this.handleFilter.bind(this);
   }
@@ -23,7 +31,10 @@ class Sider extends Component {
     });
   }
   toggleVisible = (visible = false) => {
-    this.setState({ visible });
+    this.setState({
+      visible,
+      confirmLoading: false
+    });
   }
   showModal = () => {
     this.toggleVisible(true);
@@ -34,13 +45,22 @@ class Sider extends Component {
       if (err) {
         return;
       }
+      this.setState({ confirmLoading: true });
+
       let { bucket, region } = values;
       this.props.createBucket({ bucket, region }).then(res => {
-        form.resetFields();
         this.toggleVisible(false);
-        this.props.fetchBuckets();
+        form.resetFields();
+        openNotification('success', `Create ${bucket} successfully!`);
       }).catch(err => {
+        this.toggleVisible(false);
+        openNotification('error', `Create ${bucket} failed!`);
         console.error(err);
+      }).then(() => {
+        this.props.fetchBuckets().catch(err => {
+          openNotification('error', `Fetch buckets failed!`);
+          console.error(err);
+        });
       })
     });
   }
@@ -61,6 +81,7 @@ class Sider extends Component {
           <CreateBucket
             wrappedComponentRef={this.saveFormRef}
             visible={this.state.visible}
+            loading={this.state.confirmLoading}
             onCancel={this.handleCancel}
             onCreate={this.handleCreate} />
         </div>

@@ -1,17 +1,24 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import './index.css';
 
-const Content = ({match}) => {
-  let bucket = match.params.bucket;
+const Content = ({ selected }) => {
   return (
     <div className="bucket-content">
       {
-        bucket === undefined ? 'No buckets!' : bucket
+        selected === '' ? 'No buckets!' : selected
       }
     </div>
   );
 }
 
-export default withRouter(Content);
+Content.propTypes = {
+  selected: PropTypes.string
+};
+
+Content.defaultProps = {
+  selected: ''
+};
+
+export default Content;
