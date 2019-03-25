@@ -19,7 +19,6 @@ class FilterList extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      activeIndex: -1,
       visible: false,
       waitToBeDeleted: ''
     };
@@ -59,6 +58,19 @@ class FilterList extends Component {
     }).catch(err => {
       console.error(err);
     }) */
+  }
+
+  componentDidMount () {
+    const { selected, buckets} = this.props;
+    if (selected === '') {
+      if (buckets.length !== 0) {
+        this.props.selectBucket(buckets[0]['name']);
+      }
+    } else {
+      if (buckets.length === 0 || getSelectedIndex(buckets, selected) == -1) {
+        this.props.selectBucket('');
+      }
+    }
   }
   render () {
     const { buckets, filterText, selected } = this.props;
