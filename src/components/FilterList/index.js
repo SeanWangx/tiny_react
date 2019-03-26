@@ -80,7 +80,7 @@ class FilterList extends Component {
         this.props.selectBucket(buckets[0]['name']);
       }
     } else {
-      if (buckets.length === 0 || getSelectedIndex(buckets, selected) == -1) {
+      if (buckets.length === 0 || getSelectedIndex(buckets, selected) === -1) {
         this.props.selectBucket('');
       }
     }
