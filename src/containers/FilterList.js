@@ -4,7 +4,8 @@ import {
   deleteBucket,
   fetchBuckets,
   selectBucket,
-  fetchBucketZone
+  fetchBucketZone,
+  fetchBucketDomain
 } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({
@@ -24,6 +25,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   fetchBucketZone: bucket => {
     return dispatch(fetchBucketZone(bucket));
+  },
+  fetchBucketDomain: bucket => {
+    return dispatch(fetchBucketDomain(bucket));
   }
 })
 

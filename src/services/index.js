@@ -63,3 +63,17 @@ export function fetchBucketZone (bucket) {
     return Promise.resolve(zone);
   });
 }
+
+export function fetchBucketDomain (bucket) {
+  let uri = `/v6/domain/list?tbl=${bucket}`;
+  let accessToken = qiniu.getAccessToken(uri);
+  if (accessToken === null) return Promise.reject('Mac key missing!');
+  return axios.get(`http://api.qiniu.com${uri}`, {
+    method: 'get',
+    headers: {
+      'Authorization': `QBox ${accessToken}`
+    }
+  }).then(res => {
+    return Promise.resolve(res['data']);
+  });
+}

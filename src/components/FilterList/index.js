@@ -33,11 +33,15 @@ class FilterList extends Component {
     if (bucketobj['name'] === this.props.selected) {
       return;
     }
-    console.todo(bucketobj);
-    let zone = bucketobj['zone'];
     this.props.selectBucket(bucketobj['name']);
+
+    let zone = bucketobj['zone'];
+    let domains = bucketobj['domains'];
     if (zone === '') {
       this.props.fetchBucketZone(bucketobj['name']);
+    }
+    if (domains.length === 0) {
+      this.props.fetchBucketDomain(bucketobj['name']);
     }
   }
   handleDelete (e, bucketObj = {}) {
@@ -141,7 +145,8 @@ FilterList.propTypes = {
   fetchBuckets: PropTypes.func.isRequired,
   deleteBucket: PropTypes.func.isRequired,
   selectBucket: PropTypes.func.isRequired,
-  fetchBucketZone: PropTypes.func.isRequired
+  fetchBucketZone: PropTypes.func.isRequired,
+  fetchBucketDomain: PropTypes.func.isRequired
 };
 
 FilterList.defaultProps = {

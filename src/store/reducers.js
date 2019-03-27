@@ -3,7 +3,8 @@ import {
   DELETE_MAC,
   SELECT_BUCKET,
   REFRESH_BUCKETS,
-  MODIFY_BUCKET_ZONE
+  MODIFY_BUCKET_ZONE,
+  MODIFY_BUCKET_DOMAIN
 } from './actions';
 import storage from '@/utils/storage';
 
@@ -47,6 +48,20 @@ export default function tinyApp (state = initialState, action) {
               ...bucket,
               zone: action.zone
             };
+          }
+        })
+      };
+      break;
+    case MODIFY_BUCKET_DOMAIN:
+      newState = {
+        buckets: state.buckets.map(bucket => {
+          if (bucket['name'] !== action.bucket) {
+            return bucket;
+          } else {
+            return {
+              ...bucket,
+              domains: action.domains
+            }
           }
         })
       };

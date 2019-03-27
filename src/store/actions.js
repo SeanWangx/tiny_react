@@ -2,7 +2,8 @@ import {
   fetchBuckets as fetchBucketsAPI,
   createBucket as createBucketAPI,
   deleteBucket as deleteBucketAPI,
-  fetchBucketZone as fetchBucketZoneAPI
+  fetchBucketZone as fetchBucketZoneAPI,
+  fetchBucketDomain as fetchBucketDomainAPI
 } from '../services';
 /**
  * action types
@@ -12,6 +13,7 @@ export const DELETE_MAC = 'DELETE_MAC';
 export const REFRESH_BUCKETS = 'REFRESH_BUCKETS';
 export const MODIFY_BUCKET = 'MODIFY_BUCKET';
 export const MODIFY_BUCKET_ZONE = 'MODIFY_BUCKET_ZONE';
+export const MODIFY_BUCKET_DOMAIN = 'MODIFY_BUCKET_DOMAIN';
 export const SELECT_BUCKET = 'SELECT_BUCKET';
 
 /**
@@ -35,7 +37,15 @@ export function modifyBucketZone ({ bucket, zone }) {
     type: MODIFY_BUCKET_ZONE,
     bucket,
     zone
-  }
+  };
+}
+
+export function modifyBucketDomain ({ bucket, domains }) {
+  return {
+    type: MODIFY_BUCKET_DOMAIN,
+    bucket,
+    domains
+  };
 }
 
 export function selectBucket (bucket) {
@@ -97,7 +107,18 @@ export function fetchBucketZone (bucket) {
   return dispatch => {
     return fetchBucketZoneAPI(bucket).then(zone => {
       dispatch(modifyBucketZone({ bucket, zone }));
-      return Promise.resolve();
+    }).catch(err => {
+      console.error(err);
+      return Promise.reject(err);
+    });
+  }
+}
+
+// async fetch bucket domains
+export function fetchBucketDomain (bucket) {
+  return dispatch => {
+    return fetchBucketDomainAPI(bucket).then(domains =>{
+      dispatch(modifyBucketDomain({ bucket, domains }));
     }).catch(err => {
       console.error(err);
       return Promise.reject(err);
