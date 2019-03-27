@@ -3,7 +3,8 @@ import FilterList from '../components/FilterList';
 import {
   deleteBucket,
   fetchBuckets,
-  selectBucket
+  selectBucket,
+  fetchBucketZone
 } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({
@@ -20,6 +21,9 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   selectBucket: bucket => {
     return dispatch(selectBucket(bucket));
+  },
+  fetchBucketZone: bucket => {
+    return dispatch(fetchBucketZone(bucket));
   }
 })
 
