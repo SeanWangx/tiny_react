@@ -2,7 +2,8 @@ import {
   ADD_MAC,
   DELETE_MAC,
   SELECT_BUCKET,
-  REFRESH_BUCKETS
+  REFRESH_BUCKETS,
+  MODIFY_BUCKET_ZONE
 } from './actions';
 import storage from '@/utils/storage';
 
@@ -34,6 +35,20 @@ export default function tinyApp (state = initialState, action) {
     case SELECT_BUCKET:
       newState = {
         selected: action.bucket
+      };
+      break;
+    case MODIFY_BUCKET_ZONE:
+      newState = {
+        buckets: state.buckets.map(bucket => {
+          if (bucket['name'] !== action.bucket) {
+            return bucket;
+          } else {
+            return {
+              ...bucket,
+              zone: action.zone
+            };
+          }
+        })
       };
       break;
     case REFRESH_BUCKETS:

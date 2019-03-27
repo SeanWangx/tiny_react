@@ -1,7 +1,8 @@
 import {
   fetchBuckets as fetchBucketsAPI,
   createBucket as createBucketAPI,
-  deleteBucket as deleteBucketAPI
+  deleteBucket as deleteBucketAPI,
+  fetchBucketZone as fetchBucketZoneAPI
 } from '../services';
 /**
  * action types
@@ -10,12 +11,13 @@ export const ADD_MAC = 'ADD_MAC';
 export const DELETE_MAC = 'DELETE_MAC';
 export const REFRESH_BUCKETS = 'REFRESH_BUCKETS';
 export const MODIFY_BUCKET = 'MODIFY_BUCKET';
+export const MODIFY_BUCKET_ZONE = 'MODIFY_BUCKET_ZONE';
 export const SELECT_BUCKET = 'SELECT_BUCKET';
 
 /**
  * action creators
  */
- export function addMac (payload) {
+export function addMac (payload) {
   return {
     type: ADD_MAC,
     payload // {accessKey, secretKey}
@@ -26,6 +28,14 @@ export function deleteMac () {
   return {
     type: DELETE_MAC
   };
+}
+
+export function modifyBucketZone ({ bucket, zone }) {
+  return {
+    type: MODIFY_BUCKET_ZONE,
+    bucket,
+    zone
+  }
 }
 
 export function selectBucket (bucket) {
@@ -42,8 +52,7 @@ export function refreshBuckets (buckets) {
   };
 }
 
-export function modifyBucket (payload) {
-  const { index, bucket } = payload
+export function modifyBucket ({ index, bucket }) {
   return {
     type: MODIFY_BUCKET,
     index,
@@ -80,5 +89,18 @@ export function createBucket ({ bucket, region }) {
 export function deleteBucket (bucket) {
   return dispathch => {
     return deleteBucketAPI(bucket);
+  }
+}
+
+// async fetch bucket zone
+export function fetchBucketZone (bucket) {
+  return dispatch => {
+    return fetchBucketZoneAPI(bucket).then(zone => {
+      dispatch(modifyBucketZone({ bucket, zone }));
+      return Promise.resolve();
+    }).catch(err => {
+      console.error(err);
+      return Promise.reject(err);
+    });
   }
 }
