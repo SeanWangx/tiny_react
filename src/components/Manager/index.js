@@ -20,6 +20,13 @@ class Manager extends Component {
   viewChange (view = 'content') {
     this.setState({ view });
   }
+  componentDidMount () {
+    this.props.fetchBuckets().then(() => {
+      console.todo('fetch bucket list successfully!');
+    }).catch(() => {
+      console.todo('fetch bucket list failed!');
+    })
+  }
   render () {
     const { isAuth } = this.props;
     const { view } = this.state;
@@ -48,7 +55,8 @@ class Manager extends Component {
 }
 
 Manager.propTypes = {
-  isAuth: PropTypes.bool.isRequired
+  isAuth: PropTypes.bool.isRequired,
+  fetchBuckets: PropTypes.func.isRequired
 };
 
 export default Manager;
