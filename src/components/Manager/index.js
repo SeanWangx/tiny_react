@@ -21,10 +21,9 @@ class Manager extends Component {
     this.setState({ view });
   }
   componentDidMount () {
-    this.props.fetchBuckets().then(() => {
-      console.todo('fetch bucket list successfully!');
-    }).catch(() => {
-      console.todo('fetch bucket list failed!');
+    this.props.fetchBuckets().catch(() => {
+      // TODO
+      console.error('fetch bucket list failed!');
     })
   }
   render () {
