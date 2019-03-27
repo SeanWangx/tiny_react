@@ -47,7 +47,7 @@ export function fetchBucketZone (bucket) {
       'Authorization': `QBox ${accessToken}`
     }
   }).then(res => {
-    let uploadURL = res['up']['src']['main'][0];
+    let uploadURL = res['data']['up']['src']['main'][0];
     let zone = '';
     if (uploadURL.indexOf('up-as0') !== -1) {
       zone = 'as0';
