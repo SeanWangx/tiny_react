@@ -28,16 +28,19 @@ class FilterList extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.handleOk = this.handleOk.bind(this);
   }
-  handleSelect (e, bucket) {
+  handleSelect (e, bucketobj = {}) {
     e.preventDefault();
-    this.props.selectBucket(bucket);
+    if (bucketobj['name'] === this.props.selected) {
+      return;
+    }
+    this.props.selectBucket(bucketobj['name']);
   }
-  handleDelete (e, bucket) {
+  handleDelete (e, bucketObj = {}) {
     e.preventDefault();
     e.stopPropagation();
     this.setState({
       visible: true,
-      waitToBeDeleted: bucket
+      waitToBeDeleted: bucketObj['name']
     });
   }
   closeModal (e) {
@@ -97,8 +100,8 @@ class FilterList extends Component {
                 active={item['name'] === selected}
                 text={item['name']}
                 key={index}
-                onSelect={e => this.handleSelect(e, item['name'])}
-                onDelete={e => this.handleDelete(e, item['name'])}/>
+                onSelect={e => this.handleSelect(e, item)}
+                onDelete={e => this.handleDelete(e, item)}/>
             );
           })
         }
