@@ -2,6 +2,21 @@ import qiniu from '../utils/qiniu';
 import { urlSafeBase64Encode } from '../utils/tools';
 import axios from 'axios';
 
+export function login ({ accessKey = '', secretKey = '' }) {
+  qiniu.init(accessKey, secretKey);
+  return fetchBucketList();
+}
+export function fetchBucketList () {
+  let accessToken = qiniu.getAccessToken('/buckets');
+  if (accessToken === null) return Promise.reject('Mac missing!');
+  return axios.get('http://rs.qbox.me/buckets', {
+    method: 'get',
+    headers: {
+      'Authorization': `QBox ${accessToken}`
+    }
+  });
+}
+
 export function fetchBuckets () {
   let accessToken = qiniu.getAccessToken('/buckets');
   if (accessToken === null) return Promise.reject('Mac key missing!');
