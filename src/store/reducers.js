@@ -4,7 +4,7 @@ import {
   SELECT_BUCKET,
   REFRESH_BUCKETS,
   MODIFY_BUCKET_ZONE,
-  MODIFY_BUCKET_DOMAIN
+  MODIFY_BUCKET_DOMAINS
 } from './actions';
 import storage from '@/utils/storage';
 
@@ -52,7 +52,7 @@ export default function tinyApp (state = initialState, action) {
         })
       };
       break;
-    case MODIFY_BUCKET_DOMAIN:
+    case MODIFY_BUCKET_DOMAINS:
       newState = {
         buckets: state.buckets.map(bucket => {
           if (bucket['name'] !== action.bucket) {

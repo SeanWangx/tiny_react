@@ -64,7 +64,7 @@ export function fetchBucketZone (bucket) {
   });
 }
 
-export function fetchBucketDomain (bucket) {
+export function fetchBucketDomains (bucket) {
   let uri = `/v6/domain/list?tbl=${bucket}`;
   let accessToken = qiniu.getAccessToken(uri);
   if (accessToken === null) return Promise.reject('Mac key missing!');
