@@ -11,7 +11,7 @@ const openNotification = (type, message) => {
   });
 }
 
-const getSelectedIndex = (buckets, selected) => buckets.reduce((prev, cur, index) => cur['name'] === selected ? index : prev, -1);
+const getSelectedIndex = (bucketList, name) => bucketList.reduce((prev, cur, index) => cur['name'] === name ? index : prev, -1);
 
 const Title = <div style={{textAlign: 'center'}}>删除存储空间</div>
 
@@ -28,16 +28,34 @@ class FilterList extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.handleOk = this.handleOk.bind(this);
   }
-  handleSelect (e, bucket) {
+  handleSelect (e, bucketObj = {}) {
     e.preventDefault();
-    this.props.selectBucket(bucket);
+    if (bucketObj['name'] === this.props.bucketSelected) {
+      return;
+    }
+    this.props.selectBucket(bucketObj['name']).catch(err => {
+      console.error('select bucket', err);
+    });
+
+    let zone = bucketObj['zone'];
+    let domains = bucketObj['domains'];
+    if (zone === '') {
+      this.props.fetchBucketZone(bucketObj['name']).catch(err => {
+        console.error('fetch bucket zone', err);
+      });
+    }
+    if (domains.length === 0) {
+      this.props.fetchBucketDomains(bucketObj['name']).catch(err => {
+        console.error('fetch bucket domains', err);
+      });
+    }
   }
-  handleDelete (e, bucket) {
+  handleDelete (e, bucketObj = {}) {
     e.preventDefault();
     e.stopPropagation();
     this.setState({
       visible: true,
-      waitToBeDeleted: bucket
+      waitToBeDeleted: bucketObj['name']
     });
   }
   closeModal (e) {
@@ -53,7 +71,7 @@ class FilterList extends Component {
     this.setState({ confirmLoading: true });
 
     let { waitToBeDeleted } = this.state;
-    let { selected, buckets, selectBucket, deleteBucket, fetchBuckets } = this.props;
+    let { bucketSelected, bucketList, selectBucket, deleteBucket, fetchBucketList } = this.props;
     deleteBucket(waitToBeDeleted).then(res => {
       this.closeModal();
       openNotification('success', `Delete ${waitToBeDeleted} successfully!`);
@@ -62,43 +80,43 @@ class FilterList extends Component {
       openNotification('error', `Delete ${waitToBeDeleted} failed!`);
       console.error(err);
     }).then(() => {
-      fetchBuckets().then(() => {
-        if (waitToBeDeleted === selected) {
-          selectBucket(buckets.length === 0 ? '': buckets[0]['name']);
+      fetchBucketList().then(() => {
+        if (waitToBeDeleted === bucketSelected) {
+          selectBucket(bucketList.length === 0 ? '': bucketList[0]['name']);
         }
       }).catch(err => {
-        openNotification('error', `Fetch buckets failed!`);
+        openNotification('error', `Fetch bucketList failed!`);
         console.error(err);
       });
     })
   }
 
   componentDidMount () {
-    const { selected, buckets} = this.props;
-    if (selected === '') {
-      if (buckets.length !== 0) {
-        this.props.selectBucket(buckets[0]['name']);
+    const { bucketSelected, bucketList} = this.props;
+    if (bucketSelected === '') {
+      if (bucketList.length !== 0) {
+        this.props.selectBucket(bucketList[0]['name']);
       }
     } else {
-      if (buckets.length === 0 || getSelectedIndex(buckets, selected) === -1) {
+      if (bucketList.length === 0 || getSelectedIndex(bucketList, bucketSelected) === -1) {
         this.props.selectBucket('');
       }
     }
   }
   render () {
-    const { buckets, filterText, selected } = this.props;
+    const { bucketList, filterText, bucketSelected } = this.props;
     return (
       <div className="bucket-list">
         {
-          buckets.map((item, index) => {
+          bucketList.map((item, index) => {
             return (
               <BucketItem
                 show={item['name'].indexOf(filterText) !== -1}
-                active={item['name'] === selected}
+                active={item['name'] === bucketSelected}
                 text={item['name']}
                 key={index}
-                onSelect={e => this.handleSelect(e, item['name'])}
-                onDelete={e => this.handleDelete(e, item['name'])}/>
+                onSelect={e => this.handleSelect(e, item)}
+                onDelete={e => this.handleDelete(e, item)}/>
             );
           })
         }
@@ -122,23 +140,23 @@ class FilterList extends Component {
 
 FilterList.propTypes = {
   filterText: PropTypes.string,
-  selected: PropTypes.string,
-  buckets: PropTypes.arrayOf(
+  bucketList: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
       zone: PropTypes.string,
       domains: PropTypes.arrayOf(PropTypes.string)
     })
-  ),
-  fetchBuckets: PropTypes.func.isRequired,
+  ).isRequired,
+  bucketSelected: PropTypes.string.isRequired,
+  fetchBucketList: PropTypes.func.isRequired,
   deleteBucket: PropTypes.func.isRequired,
-  selectBucket: PropTypes.func.isRequired
+  fetchBucketZone: PropTypes.func.isRequired,
+  fetchBucketDomains: PropTypes.func.isRequired,
+  selectBucket: PropTypes.func.isRequired,
 };
 
 FilterList.defaultProps = {
-  filterText: '',
-  selected: '',
-  buckets: []
+  filterText: ''
 };
 
 export default FilterList;

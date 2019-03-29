@@ -1,15 +1,15 @@
 import { connect } from 'react-redux';
 import Sider from '../components/Sider';
-import { fetchBuckets, createBucket } from '../store/actions';
+import { fetchBucketList, createBucket } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({})
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  fetchBuckets: () => {
-    return dispatch(fetchBuckets());
+  fetchBucketList: () => {
+    return dispatch(fetchBucketList());
   },
-  createBucket: payload => {
-    return dispatch(createBucket(payload));
+  createBucket: ({ name, region }) => {
+    return dispatch(createBucket({ name, region }));
   }
 })
 

@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 import Setting from '../components/Setting';
-import { deleteMac } from '../store/actions';
+import { logout } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({
-  accessKey: state.accessKey
+  accessKey: state.baseConfig.accessKey
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   logout: () => {
-    dispatch(deleteMac());
+    dispatch(logout());
   }
 })
 

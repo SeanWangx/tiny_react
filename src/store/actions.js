@@ -1,84 +1,188 @@
 import {
-  fetchBuckets as fetchBucketsAPI,
+  login as loginAPI,
+  fetchBucketList as fetchBucketListAPI,
   createBucket as createBucketAPI,
-  deleteBucket as deleteBucketAPI
+  deleteBucket as deleteBucketAPI,
+  fetchBucketZone as fetchBucketZoneAPI,
+  fetchBucketDomains as fetchBucketDomainsAPI,
+  fetchBucketSource as fetchBucketSourceAPI,
 } from '../services';
+
 /**
  * action types
  */
-export const ADD_MAC = 'ADD_MAC';
-export const DELETE_MAC = 'DELETE_MAC';
-export const REFRESH_BUCKETS = 'REFRESH_BUCKETS';
-export const MODIFY_BUCKET = 'MODIFY_BUCKET';
-export const SELECT_BUCKET = 'SELECT_BUCKET';
+export const SET_MAC = 'SET_MAC';
+export const SET_AUTH = 'SET_AUTH';
+
+export const REFRESH_BUCKET_LIST = 'REFRESH_BUCKET_LIST';
+export const ADD_BUCKET = 'ADD_BUCKET';
+export const REMOVE_BUCKET = 'REMOVE_BUCKET';
+export const MODIFY_BUCKET_ZONE = 'MODIFY_BUCKET_ZONE';
+export const MODIFY_BUCKET_DOMAINS = 'MODIFY_BUCKET_DOMAINS';
+
+export const SET_BUCKET_SELECTED = 'SET_BUCKET_SELECTED';
+export const SET_BUCKET_SOURCE = 'SET_BUCKET_SOURCE';
 
 /**
- * action creators
+ * sync action creators
  */
- export function addMac (payload) {
+export function setMac ({ accessKey = '', secretKey = '' }) {
   return {
-    type: ADD_MAC,
-    payload // {accessKey, secretKey}
+    type: SET_MAC,
+    payload: { accessKey, secretKey }
+  };
+}
+export function setAuth (isAuth = false) {
+  return {
+    type: SET_AUTH,
+    isAuth
+  };
+}
+export function refreshBucketList (bucketList = []) {
+  return {
+    type: REFRESH_BUCKET_LIST,
+    bucketList
+  };
+}
+export function addBucket ({ name, zone = '', domains = [] }) {
+  return {
+    type: ADD_BUCKET,
+    payload: { name, zone, domains }
+  };
+}
+export function removeBucket (name) {
+  return {
+    type: REMOVE_BUCKET,
+    name
+  };
+}
+export function modifyBucketZone ({ name, zone = '' }) {
+  return {
+    type: MODIFY_BUCKET_ZONE,
+    payload: { name, zone }
+  };
+}
+export function modifyBucketDomains ({ name, domains = []}) {
+  return {
+    type: MODIFY_BUCKET_DOMAINS,
+    payload: { name, domains }
+  };
+}
+export function setBucketSelected (name = '') {
+  return {
+    type: SET_BUCKET_SELECTED,
+    name
+  };
+}
+export function setBucketSource ({ sourceList = [], sourceCount = 0 }) {
+  return {
+    type: SET_BUCKET_SOURCE,
+    payload: { sourceCount, sourceList }
   };
 }
 
-export function deleteMac () {
-  return {
-    type: DELETE_MAC
-  };
-}
-
-export function selectBucket (bucket) {
-  return {
-    type: SELECT_BUCKET,
-    bucket
-  }
-}
-
-export function refreshBuckets (buckets) {
-  return {
-    type: REFRESH_BUCKETS,
-    buckets // [{name:string, zone:string, domains:array}]
-  };
-}
-
-export function modifyBucket (payload) {
-  const { index, bucket } = payload
-  return {
-    type: MODIFY_BUCKET,
-    index,
-    bucket // {name:string, zone:string, domains:array}
-  };
-}
-
-// async fetch buckets
-export function fetchBuckets () {
+/**
+ * async action creators
+ */
+export function login ({ accessKey = '', secretKey = ''}) {
   return dispatch => {
-    return fetchBucketsAPI().then(res => {
+    return loginAPI({ accessKey, secretKey }).then(res => {
       const { data } = res;
-      dispatch(refreshBuckets(data.map(item => ({
-        name: item,
+      dispatch(refreshBucketList(data.map(name => ({
+        name,
         zone: '',
         domains: []
       }))));
-      return Promise.resolve(res);
+      // set base config: mac and auth
+      dispatch(setMac({ accessKey, secretKey }));
+      dispatch(setAuth(true));
     }).catch(err => {
       console.error(err);
       return Promise.reject(err);
-    })
-  }
+    });
+  };
 }
-
-// async create buckets
-export function createBucket ({ bucket, region }) {
+export function logout () {
   return dispatch => {
-    return createBucketAPI({ bucket, region });
+    dispatch(setMac({}));
+    dispatch(setAuth());
+    dispatch(refreshBucketList());
+    dispatch(setBucketSelected());
+  };
+}
+export function fetchBucketList () {
+  return dispatch => {
+    return fetchBucketListAPI().then(res => {
+      const { data } = res;
+      dispatch(refreshBucketList(data.map(name => ({
+        name,
+        zone: '',
+        domains: []
+      }))));
+    }).catch(err => {
+      console.error(err);
+      return Promise.reject(err);
+    });
+  };
+}
+export function createBucket ({ name, region }) {
+  return dispatch => {
+    return createBucketAPI({ name, region });
+  };
+}
+export function deleteBucket (bucket) {
+  return dispatch => {
+    return deleteBucketAPI(bucket);
+  };
+}
+export function fetchBucketZone (name) {
+  return dispatch => {
+    return fetchBucketZoneAPI(name).then(zone => {
+      dispatch(modifyBucketZone({ name, zone }));
+    }).catch(err => {
+      console.error(err);
+      return Promise.reject(err);
+    });
+  };
+}
+export function fetchBucketDomains (name) {
+  return dispatch => {
+    return fetchBucketDomainsAPI(name).then(domains => {
+      dispatch(modifyBucketDomains({ name, domains }));
+    }).catch(err => {
+      console.error(err);
+      return Promise.reject(err);
+    });
   }
 }
-
-// async delete bucket
-export function deleteBucket (bucket) {
-  return dispathch => {
-    return deleteBucketAPI(bucket);
+export function selectBucket (name) {
+  return dispatch => {
+    dispatch(setBucketSelected(name));
+    return dispatch(fetchBucketSource({ bucket: name }));
   }
+}
+export function fetchBucketSource ({
+  bucket,
+  marker = '',
+  limit = '10000',
+  prefix = '',
+  delimiter = '',
+}) {
+  return dispatch => {
+    return fetchBucketSourceAPI({
+      bucket,
+      marker,
+      limit,
+      prefix,
+      delimiter
+    }).then(sourceList => {
+      dispatch(setBucketSource({
+        sourceList,
+        sourceCount: sourceList.length
+      }));
+    }).catch(err => {
+      console.error(err);
+      return Promise.reject(err);
+    });
+  };
 }

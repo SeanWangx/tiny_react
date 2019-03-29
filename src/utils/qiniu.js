@@ -30,11 +30,15 @@ class QiNiu {
   }
 
   getAccessToken (url) {
-    url = url + '\n';
-    let sign = Crypto.createHmac('sha1', this.secretKey).update(url).digest();
-    let encodedSign = urlSafeBase64Encode(sign);
-    let accessToken = `${this.accessKey}:${encodedSign}`;
-    return accessToken;
+    if (!!this.secretKey && !!this.accessKey) {
+      url = url + '\n';
+      let sign = Crypto.createHmac('sha1', this.secretKey).update(url).digest();
+      let encodedSign = urlSafeBase64Encode(sign);
+      let accessToken = `${this.accessKey}:${encodedSign}`;
+      return accessToken;
+    } else {
+      return null;
+    }
   }
 }
 

@@ -48,7 +48,7 @@ class Sider extends Component {
       this.setState({ confirmLoading: true });
 
       let { bucket, region } = values;
-      this.props.createBucket({ bucket, region }).then(res => {
+      this.props.createBucket({ name: bucket, region }).then(res => {
         this.toggleVisible(false);
         form.resetFields();
         openNotification('success', `Create ${bucket} successfully!`);
@@ -57,7 +57,7 @@ class Sider extends Component {
         openNotification('error', `Create ${bucket} failed!`);
         console.error(err);
       }).then(() => {
-        this.props.fetchBuckets().catch(err => {
+        this.props.fetchBucketList().catch(err => {
           openNotification('error', `Fetch buckets failed!`);
           console.error(err);
         });
@@ -97,7 +97,7 @@ class Sider extends Component {
 }
 
 Sider.propTypes = {
-  fetchBuckets: PropTypes.func.isRequired,
+  fetchBucketList: PropTypes.func.isRequired,
   createBucket: PropTypes.func.isRequired
 };
 

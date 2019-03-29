@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import Content from '../components/Content';
 
 const mapStateToProps = (state, ownProps) => ({
-  selected: state.selected
+  bucketSelected: state.bucketSelected.name
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({})
