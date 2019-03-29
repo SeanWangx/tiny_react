@@ -3,7 +3,7 @@ import Manager from '../components/Manager';
 import { fetchBucketList } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({
-  isAuth: state.isAuth
+  isAuth: state.baseConfig.isAuth
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

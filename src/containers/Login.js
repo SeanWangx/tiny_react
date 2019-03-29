@@ -3,12 +3,12 @@ import Login from '../components/Login';
 import { login } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({
-  isAuth: state.isAuth
+  isAuth: state.baseConfig.isAuth
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  login: payload => {
-    return dispatch(login(payload));
+  login: ({ accessKey, secretKey }) => {
+    return dispatch(login({ accessKey, secretKey }));
   }
 })
 
