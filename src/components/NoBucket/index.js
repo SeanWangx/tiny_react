@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Icon, notification } from 'antd';
-import FilterInput from '../FilterInput';
-import FilterList from '../../containers/FilterList';
+import { Button, notification } from 'antd';
 import CreateBucket from '../CreateBucket';
 
 import './index.css';
@@ -14,38 +12,38 @@ const openNotification = (type, message) => {
   });
 }
 
-class Sider extends Component {
+class NoBucket extends Component {
   constructor (props) {
     super(props);
     this.state = {
-      filterText: '',
       visible: false,
-      confirmLoading: false
+      loading: false
     };
-    this.hanldeFilter = this.handleFilter.bind(this);
-  }
-  handleFilter (e) {
-    e.preventDefault(e);
-    this.setState({
-      filterText: e.target.value
-    });
   }
   toggleVisible = (visible = false) => {
     this.setState({
       visible,
-      confirmLoading: false
-    });
+      loading: false
+    })
   }
-  showModal = () => {
+  showModal = (e) => {
+    e.preventDefault();
     this.toggleVisible(true);
   }
-  handleCreate = () => {
+  handleCancel = (e) => {
+    e.preventDefault();
+    const { form } = this.formRef.props;
+    this.toggleVisible(false);
+    form.resetFields();
+  }
+  handleCreate = (e) => {
+    e.preventDefault();
     const { form } = this.formRef.props;
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
-      this.setState({ confirmLoading: true });
+      this.setState({ loading: true });
 
       let { bucket, region } = values;
       this.props.createBucket({ name: bucket, region }).then(res => {
@@ -63,41 +61,30 @@ class Sider extends Component {
       });
     });
   }
-  handleCancel = () => {
-    const { form } = this.formRef.props;
-    this.toggleVisible(false);
-    form.resetFields();
-  }
   saveFormRef = formRef => {
     this.formRef = formRef;
   }
-
   render () {
     return (
-      <div className="sider-content">
-        <div className="sider-item item-filter">
-          <FilterInput onFilter={this.hanldeFilter} onAdd={this.showModal}/>
+      <div className="has-no-bucket">
+        <div>
+          <h1>You have no bucket!</h1>
+          <p><Button type="primary" size="small" onClick={this.showModal}>Create</Button> a new bucket!</p>
           <CreateBucket
             wrappedComponentRef={this.saveFormRef}
             visible={this.state.visible}
-            loading={this.state.confirmLoading}
+            loading={this.state.loading}
             onCancel={this.handleCancel}
             onCreate={this.handleCreate} />
-        </div>
-        <div className="sider-item item-list" onClick={() => this.props.onViewChange('content')}>
-          <FilterList filterText={this.state.filterText}/>
-        </div>
-        <div className="sider-item item-setting">
-          <Icon type="setting" style={{'cursor': 'pointer'}} onClick={() => this.props.onViewChange('setting')}/>
         </div>
       </div>
     );
   }
 }
 
-Sider.propTypes = {
+NoBucket.propTypes = {
   fetchBucketList: PropTypes.func.isRequired,
   createBucket: PropTypes.func.isRequired
 };
 
-export default Sider;
+export default NoBucket;
