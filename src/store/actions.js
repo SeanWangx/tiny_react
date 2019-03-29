@@ -96,7 +96,7 @@ export function login ({ accessKey = '', secretKey = ''}) {
 }
 export function logout () {
   return dispatch => {
-    dispatch(setMac());
+    dispatch(setMac({}));
     dispatch(setAuth());
     dispatch(refreshBucketList());
     dispatch(setBucketSelected());
