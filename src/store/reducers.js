@@ -9,7 +9,7 @@ import {
   MODIFY_BUCKET_DOMAINS,
   SET_BUCKET_SELECTED,
 } from './actions';
-import storage from '@/utils/storage';
+import storage from '../utils/storage';
 
 /* const initialState = {
   baseConfig: {
@@ -41,8 +41,11 @@ function baseConfig (state = initialStateForBaseConfig, action) {
   switch (action.type) {
     case SET_MAC:
       let { accessKey = '', secretKey = ''} = action.payload;
+      storage.set('accessKey', accessKey);
+      storage.set('secretKey', secretKey);
       return { ...state, accessKey, secretKey };
     case SET_AUTH:
+      storage.set('isAuth', action.isAuth);
       return {
         ...state,
         isAuth: action.isAuth
@@ -53,13 +56,15 @@ function baseConfig (state = initialStateForBaseConfig, action) {
 }
 
 function bucketList (state = initialStateForBucketList, action) {
+  let newState = state;
   switch (action.type) {
     case REFRESH_BUCKET_LIST:
       // 刷新存储空间列表
-      return action.bucketList;
+      newState = action.bucketList;
+      break;
     case ADD_BUCKET:
       // 添加存储空间
-      return [
+      newState = [
         ...state,
         {
           name: action.payload['name'],
@@ -67,14 +72,16 @@ function bucketList (state = initialStateForBucketList, action) {
           domains: action.payload['domains']
         }
       ];
+      break;
     case REMOVE_BUCKET:
       // 删除存储空间
-      return state.filter(bucket => {
+      newState = state.filter(bucket => {
         return bucket['name'] !== action.name;
       });
+      break;
     case MODIFY_BUCKET_ZONE:
       // 修改指定存储空间zone
-      return state.map(bucket => {
+      newState = state.map(bucket => {
         if (bucket['name'] === action.payload['name']) {
           return {
             ...bucket,
@@ -83,9 +90,10 @@ function bucketList (state = initialStateForBucketList, action) {
         }
         return bucket;
       });
+      break;
     case MODIFY_BUCKET_DOMAINS:
       // 修改指定存储空间domains
-      return state.map(bucket => {
+      newState = state.map(bucket => {
         if (bucket['name'] === action.payload['name']) {
           return {
             ...bucket,
@@ -94,14 +102,18 @@ function bucketList (state = initialStateForBucketList, action) {
         }
         return bucket;
       })
+      break;
     default:
       return state;
   }
+  storage.set('bucketList', newState);
+  return newState;
 }
 
 function bucketSelected (state = initialStateForBucketSelected, action) {
   switch (action.type) {
     case SET_BUCKET_SELECTED:
+      storage.get('bucketSelected', action.name);
       return {
         ...state,
         name: action.name
