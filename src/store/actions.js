@@ -20,6 +20,7 @@ export const MODIFY_BUCKET_ZONE = 'MODIFY_BUCKET_ZONE';
 export const MODIFY_BUCKET_DOMAINS = 'MODIFY_BUCKET_DOMAINS';
 
 export const SET_BUCKET_SELECTED = 'SET_BUCKET_SELECTED';
+export const SET_BUCKET_SOURCE = 'SET_BUCKET_SOURCE';
 
 /**
  * sync action creators
@@ -70,6 +71,12 @@ export function setBucketSelected (name = '') {
   return {
     type: SET_BUCKET_SELECTED,
     name
+  };
+}
+export function setBucketSource ({ sourceList = [], sourceCount = 0 }) {
+  return {
+    type: SET_BUCKET_SOURCE,
+    payload: { sourceCount, sourceList }
   };
 }
 

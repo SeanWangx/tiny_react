@@ -8,6 +8,7 @@ import {
   MODIFY_BUCKET_ZONE,
   MODIFY_BUCKET_DOMAINS,
   SET_BUCKET_SELECTED,
+  SET_BUCKET_SOURCE,
 } from './actions';
 import storage from '../utils/storage';
 
@@ -118,6 +119,14 @@ function bucketSelected (state = initialStateForBucketSelected, action) {
         ...state,
         name: action.name
       };
+    case SET_BUCKET_SOURCE:
+      storage.set('sourceList', action.payload['sourceList']);
+      storage.set('sourceCount', action.payload['sourceCount']);
+      return {
+        ...state,
+        sourceList: action.payload['sourceList'],
+        sourceCount: action.payload['sourceCount']
+      }
     default:
       return state;
   }
