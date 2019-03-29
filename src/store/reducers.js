@@ -1,82 +1,132 @@
+import { combineReducers } from 'redux';
 import {
-  ADD_MAC,
-  DELETE_MAC,
-  SELECT_BUCKET,
-  REFRESH_BUCKETS,
+  SET_MAC,
+  SET_AUTH,
+  REFRESH_BUCKET_LIST,
+  ADD_BUCKET,
+  REMOVE_BUCKET,
   MODIFY_BUCKET_ZONE,
-  MODIFY_BUCKET_DOMAIN
+  MODIFY_BUCKET_DOMAINS,
+  SET_BUCKET_SELECTED,
 } from './actions';
-import storage from '@/utils/storage';
+import storage from '../utils/storage';
 
-const initialState = {
+/* const initialState = {
+  baseConfig: {
+    accessKey: '',
+    secretKey: '',
+    isAuth: false,
+  },
+  bucketList: [],
+  bucketSelected: {
+    name: '',
+    sourceList: [],
+    sourceCount: 0
+  }
+}; */
+
+const initialStateForBaseConfig = {
   accessKey: storage.get('accessKey', ''),
   secretKey: storage.get('secretKey', ''),
   isAuth: storage.get('isAuth', false),
-  buckets: storage.get('buckets', []),
-  selected: storage.get('selected', '')
+};
+const initialStateForBucketList = storage.get('bucketList', []);
+const initialStateForBucketSelected = {
+  name: storage.get('bucketSelected', ''),
+  sourceList: storage.get('sourceList', []),
+  sourceCount: storage.get('sourceCount', 0),
 };
 
-export default function tinyApp (state = initialState, action) {
-  let newState;
+function baseConfig (state = initialStateForBaseConfig, action) {
   switch (action.type) {
-    case ADD_MAC:
-      newState = {
-        accessKey: action.payload['accessKey'] || '',
-        secretKey: action.payload['secretKey'] || '',
-        isAuth: true
-      };
+    case SET_MAC:
+      let { accessKey = '', secretKey = ''} = action.payload;
+      storage.set('accessKey', accessKey);
+      storage.set('secretKey', secretKey);
+      return { ...state, accessKey, secretKey };
+    case SET_AUTH:
+      storage.set('isAuth', action.isAuth);
+      return {
+        ...state,
+        isAuth: action.isAuth
+      }
+    default:
+      return state;
+  }
+}
+
+function bucketList (state = initialStateForBucketList, action) {
+  let newState = state;
+  switch (action.type) {
+    case REFRESH_BUCKET_LIST:
+      // 刷新存储空间列表
+      newState = action.bucketList;
       break;
-    case DELETE_MAC:
-      newState = {
-        accessKey: '',
-        secretKey: '',
-        isAuth: false
-      };
+    case ADD_BUCKET:
+      // 添加存储空间
+      newState = [
+        ...state,
+        {
+          name: action.payload['name'],
+          zone: action.payload['zone'],
+          domains: action.payload['domains']
+        }
+      ];
       break;
-    case SELECT_BUCKET:
-      newState = {
-        selected: action.bucket
-      };
+    case REMOVE_BUCKET:
+      // 删除存储空间
+      newState = state.filter(bucket => {
+        return bucket['name'] !== action.name;
+      });
       break;
     case MODIFY_BUCKET_ZONE:
-      newState = {
-        buckets: state.buckets.map(bucket => {
-          if (bucket['name'] !== action.bucket) {
-            return bucket;
-          } else {
-            return {
-              ...bucket,
-              zone: action.zone
-            };
-          }
-        })
-      };
+      // 修改指定存储空间zone
+      newState = state.map(bucket => {
+        if (bucket['name'] === action.payload['name']) {
+          return {
+            ...bucket,
+            zone: action.payload['zone']
+          };
+        }
+        return bucket;
+      });
       break;
-    case MODIFY_BUCKET_DOMAIN:
-      newState = {
-        buckets: state.buckets.map(bucket => {
-          if (bucket['name'] !== action.bucket) {
-            return bucket;
-          } else {
-            return {
-              ...bucket,
-              domains: action.domains
-            }
-          }
-        })
-      };
-      break;
-    case REFRESH_BUCKETS:
-      newState = {
-        buckets: action.buckets || []
-      };
+    case MODIFY_BUCKET_DOMAINS:
+      // 修改指定存储空间domains
+      newState = state.map(bucket => {
+        if (bucket['name'] === action.payload['name']) {
+          return {
+            ...bucket,
+            domains: action.payload['domains']
+          };
+        }
+        return bucket;
+      })
       break;
     default:
       return state;
   }
-  Object.keys(newState).forEach(key => storage.set(key, newState[key]));
-  return {
-    ...state,
-    ...newState
-  };
-};
+  storage.set('bucketList', newState);
+  return newState;
+}
+
+function bucketSelected (state = initialStateForBucketSelected, action) {
+  switch (action.type) {
+    case SET_BUCKET_SELECTED:
+      storage.set('bucketSelected', action.name);
+      return {
+        ...state,
+        name: action.name
+      };
+    default:
+      return state;
+  }
+}
+
+const tinyApp = combineReducers({
+  baseConfig,
+  bucketList,
+  bucketSelected
+});
+
+export default tinyApp;

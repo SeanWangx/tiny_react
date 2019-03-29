@@ -3,22 +3,22 @@ import PropTypes from 'prop-types';
 
 import './index.css';
 
-const Content = ({ selected }) => {
+const Content = ({ bucketSelected }) => {
   return (
     <div className="bucket-content">
       {
-        selected === '' ? 'No buckets!' : selected
+        bucketSelected === '' ? 'No buckets!' : bucketSelected
       }
     </div>
   );
 }
 
 Content.propTypes = {
-  selected: PropTypes.string
+  bucketSelected: PropTypes.string
 };
 
 Content.defaultProps = {
-  selected: ''
+  bucketSelected: ''
 };
 
 export default Content;

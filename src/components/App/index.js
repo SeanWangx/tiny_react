@@ -5,9 +5,8 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
-import Login from '@/containers/Login';
-// import BucketsPage from '@/containers/BucketsPage';
-import Manager from '@/containers/Manager';
+import Login from '../../containers/Login';
+import Manager from '../../containers/Manager';
 
 import './index.css';
 

@@ -30,15 +30,13 @@ const BucketSetting = ({ onBack, logout, accessKey }) => (
 )
 
 BucketSetting.propTypes = {
-  accessKey: PropTypes.string,
+  accessKey: PropTypes.string.isRequired,
   onBack: PropTypes.func,
-  logout: PropTypes.func
+  logout: PropTypes.func.isRequired
 };
 
 BucketSetting.defaultProps = {
-  accessKey: '',
-  onBack: null,
-  logout: null
+  onBack: null
 };
 
 export default BucketSetting;

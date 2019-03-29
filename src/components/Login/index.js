@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Form, Input, Button, notification } from 'antd';
 import PropTypes from 'prop-types';
-import qiniu from '../../utils/qiniu';
 
 import './index.css';
 
@@ -33,14 +32,12 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       const { accessKey, secretKey } = values;
-      qiniu.init(accessKey, secretKey);
       if (!err) {
-        this.props.fetchBuckets().then(res => {
-          this.props.addMac({ accessKey, secretKey });
+        this.props.login({ accessKey, secretKey }).then(() => {
           openNotification('success', 'Login Successfully!')
         }).catch(err => {
           console.error(err);
-          openNotification('error', 'Key Error!')
+          openNotification('error', 'Login failed!')
         })
       }
     })
@@ -82,8 +79,7 @@ class Login extends Component {
 
 Login.propTypes = {
   isAuth: PropTypes.bool.isRequired,
-  fetchBuckets: PropTypes.func.isRequired,
-  addMac: PropTypes.func.isRequired,
+  login: PropTypes.func.isRequired,
   form: PropTypes.object.isRequired
 };
 

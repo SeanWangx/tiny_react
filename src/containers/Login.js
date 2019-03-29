@@ -1,17 +1,14 @@
 import { connect } from 'react-redux';
 import Login from '../components/Login';
-import { addMac, fetchBuckets } from '../store/actions';
+import { login } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({
-  isAuth: state.isAuth
+  isAuth: state.baseConfig.isAuth
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  fetchBuckets: () => {
-    return dispatch(fetchBuckets());
-  },
-  addMac: payload => {
-    return dispatch(addMac(payload));
+  login: ({ accessKey, secretKey }) => {
+    return dispatch(login({ accessKey, secretKey }));
   }
 })
 
