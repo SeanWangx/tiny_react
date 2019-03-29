@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
   selectBucket: bucket => {
     return dispatch(selectBucket(bucket));
-  },
+  }
 })
 
 export default connect(

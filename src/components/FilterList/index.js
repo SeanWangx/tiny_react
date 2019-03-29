@@ -28,20 +28,26 @@ class FilterList extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.handleOk = this.handleOk.bind(this);
   }
-  handleSelect (e, bucketobj = {}) {
+  handleSelect (e, bucketObj = {}) {
     e.preventDefault();
-    if (bucketobj['name'] === this.props.bucketSelected) {
+    if (bucketObj['name'] === this.props.bucketSelected) {
       return;
     }
-    this.props.selectBucket(bucketobj['name']);
+    this.props.selectBucket(bucketObj['name']).catch(err => {
+      console.error('select bucket', err);
+    });
 
-    let zone = bucketobj['zone'];
-    let domains = bucketobj['domains'];
+    let zone = bucketObj['zone'];
+    let domains = bucketObj['domains'];
     if (zone === '') {
-      this.props.fetchBucketZone(bucketobj['name']);
+      this.props.fetchBucketZone(bucketObj['name']).catch(err => {
+        console.error('fetch bucket zone', err);
+      });
     }
     if (domains.length === 0) {
-      this.props.fetchBucketDomains(bucketobj['name']);
+      this.props.fetchBucketDomains(bucketObj['name']).catch(err => {
+        console.error('fetch bucket domains', err);
+      });
     }
   }
   handleDelete (e, bucketObj = {}) {
@@ -146,7 +152,7 @@ FilterList.propTypes = {
   deleteBucket: PropTypes.func.isRequired,
   fetchBucketZone: PropTypes.func.isRequired,
   fetchBucketDomains: PropTypes.func.isRequired,
-  selectBucket: PropTypes.func.isRequired
+  selectBucket: PropTypes.func.isRequired,
 };
 
 FilterList.defaultProps = {
