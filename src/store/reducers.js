@@ -113,7 +113,7 @@ function bucketList (state = initialStateForBucketList, action) {
 function bucketSelected (state = initialStateForBucketSelected, action) {
   switch (action.type) {
     case SET_BUCKET_SELECTED:
-      storage.get('bucketSelected', action.name);
+      storage.set('bucketSelected', action.name);
       return {
         ...state,
         name: action.name
