@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 import Manager from '../components/Manager';
-import { fetchBuckets } from '../store/actions';
+import { fetchBucketList } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({
   isAuth: state.isAuth
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  fetchBuckets: () => {
-    return dispatch(fetchBuckets());
+  fetchBucketList: () => {
+    return dispatch(fetchBucketList());
   }
 })
 

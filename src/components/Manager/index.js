@@ -21,7 +21,7 @@ class Manager extends Component {
     this.setState({ view });
   }
   componentDidMount () {
-    this.props.fetchBuckets().catch(() => {
+    this.props.fetchBucketList().catch(() => {
       // TODO
       console.error('fetch bucket list failed!');
     })
@@ -55,7 +55,7 @@ class Manager extends Component {
 
 Manager.propTypes = {
   isAuth: PropTypes.bool.isRequired,
-  fetchBuckets: PropTypes.func.isRequired
+  fetchBucketList: PropTypes.func.isRequired
 };
 
 export default Manager;
