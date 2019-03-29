@@ -4,7 +4,8 @@ import {
   createBucket as createBucketAPI,
   deleteBucket as deleteBucketAPI,
   fetchBucketZone as fetchBucketZoneAPI,
-  fetchBucketDomains as fetchBucketDomainsAPI
+  fetchBucketDomains as fetchBucketDomainsAPI,
+  fetchBucketSource as fetchBucketSourceAPI,
 } from '../services';
 
 /**
@@ -158,5 +159,31 @@ export function selectBucket (name) {
   return dispatch => {
     // TODO extension
     dispatch(setBucketSelected(name));
+    return dispatch(fetchBucketSource({ bucket: name }));
   }
+}
+export function fetchBucketSource ({
+  bucket,
+  marker = '',
+  limit = '10000',
+  prefix = '',
+  delimiter = '',
+}) {
+  return dispatch => {
+    return fetchBucketSourceAPI({
+      bucket,
+      marker,
+      limit,
+      prefix,
+      delimiter
+    }).then(sourceList => {
+      dispatch(setBucketSource({
+        sourceList,
+        sourceCount: sourceList.length
+      }));
+    }).catch(err => {
+      console.error(err);
+      return Promise.reject(err);
+    });
+  };
 }

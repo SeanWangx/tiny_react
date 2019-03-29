@@ -123,7 +123,6 @@ export function fetchBucketSource ({
       'Authorization': `QBox ${accessToken}`
     }
   }).then(res => {
-    console.todo(res);
-    return Promise.resolve(res['item'] || []);
-  })
+    return Promise.resolve(res['data']['items'] || []);
+  });
 }
