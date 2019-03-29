@@ -157,8 +157,15 @@ export function fetchBucketDomains (name) {
 }
 export function selectBucket (name) {
   return dispatch => {
-    dispatch(setBucketSelected(name));
-    return dispatch(fetchBucketSource({ bucket: name }));
+    dispatch(setBucketSelected(name)); 
+    if (!!name === false) {
+      // cancel http request, direct to set bucket source with empty object
+      dispatch(setBucketSource({}));
+      return Promise.resolve();
+    } else {
+      // get http request
+      return dispatch(fetchBucketSource({ bucket: name }));
+    }
   }
 }
 export function fetchBucketSource ({
