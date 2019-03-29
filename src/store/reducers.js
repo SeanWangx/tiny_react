@@ -59,8 +59,14 @@ function bucketList (state = initialStateForBucketList, action) {
       return action.bucketList;
     case ADD_BUCKET:
       // 添加存储空间
-      let { name, zone, domains } = action.payload;
-      return [ ...state, { name, zone, domains }];
+      return [
+        ...state,
+        {
+          name: action.payload['name'],
+          zone: action.payload['zone'],
+          domains: action.payload['domains']
+        }
+      ];
     case REMOVE_BUCKET:
       // 删除存储空间
       return state.filter(bucket => {
@@ -68,19 +74,23 @@ function bucketList (state = initialStateForBucketList, action) {
       });
     case MODIFY_BUCKET_ZONE:
       // 修改指定存储空间zone
-      let { name, zone } = action.payload;
       return state.map(bucket => {
-        if (bucket['name'] === name) {
-          return { ...bucket, zone };
+        if (bucket['name'] === action.payload['name']) {
+          return {
+            ...bucket,
+            zone: action.payload['zone']
+          };
         }
         return bucket;
       });
     case MODIFY_BUCKET_DOMAINS:
       // 修改指定存储空间domains
-      let { name, domains } = action.payload;
       return state.map(bucket => {
-        if (bucket['name'] === name) {
-          return { ...bucket, domains };
+        if (bucket['name'] === action.payload['name']) {
+          return {
+            ...bucket,
+            domains: action.payload['domains']
+          };
         }
         return bucket;
       })
