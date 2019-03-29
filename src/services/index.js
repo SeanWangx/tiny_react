@@ -96,3 +96,34 @@ export function fetchBucketDomains (bucket) {
     return Promise.resolve(res['data']);
   });
 }
+/**
+ * 获取存储空间资源列表
+ * @param {*} bucket 目标存储空间名称 
+ * @param {*} marker 上一次列举返回的位置标记，作为本次列举的起点信息 
+ * @param {*} limit 本次列举的条目数，范围为1-1000 
+ * @param {*} prefix 指定前缀，只有资源名匹配该前缀的资源会被列出 
+ * @param {*} delimiter 指定目录分隔符，列出所有公共前缀（模拟列出目录效果） 
+ */
+export function fetchBucketSource ({
+  bucket,
+  marker = '',
+  limit = '10000', // 不分页了
+  prefix = '',
+  delimiter = ''
+}) {
+  let Marker = marker ? `&marker=${marker}` : '';
+  let Limit = limit ? `&limit=${limit}` : '';
+  let Prefix = prefix ? `&prefix=${encodeURI(prefix)}` : '';
+  let Delimiter = delimiter ? `&delimiter=${encodeURI(delimiter)}` : '';
+  let uri = `/list?bucket=${bucket}${Marker}${Limit}${Prefix}${Delimiter}`;
+  let accessToken = qiniu.getAccessToken(uri);
+  return axios.get(`http://rsf.qbox.me${uri}`, {
+    method: 'get',
+    headers: {
+      'Authorization': `QBox ${accessToken}`
+    }
+  }).then(res => {
+    console.todo(res);
+    return Promise.resolve(res['item'] || []);
+  })
+}
