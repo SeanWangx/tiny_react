@@ -66,7 +66,7 @@ export function modifyBucketDomains ({ name, domains = []}) {
     payload: { name, domains }
   };
 }
-export function setBucketSelected (name) {
+export function setBucketSelected (name = '') {
   return {
     type: SET_BUCKET_SELECTED,
     name
@@ -92,6 +92,14 @@ export function login ({ accessKey = '', secretKey = ''}) {
       console.error(err);
       return Promise.reject(err);
     });
+  };
+}
+export function logout () {
+  return dispatch => {
+    dispatch(setMac());
+    dispatch(setAuth());
+    dispatch(refreshBucketList());
+    dispatch(setBucketSelected());
   };
 }
 export function fetchBucketList () {
