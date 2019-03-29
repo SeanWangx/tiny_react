@@ -147,3 +147,9 @@ export function fetchBucketDomains (name) {
     });
   }
 }
+export function selectBucket (name) {
+  return dispatch => {
+    // TODO extension
+    dispatch(setBucketSelected(name));
+  }
+}
