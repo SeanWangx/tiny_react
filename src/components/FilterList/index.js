@@ -24,21 +24,27 @@ class FilterList extends Component {
       confirmLoading: false
     };
     this.handleSelect = this.handleSelect.bind(this);
+    this.selectBucketIntegrated = this.selectBucketIntegrated.bind(this);
+
     this.handleDelete = this.handleDelete.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleOk = this.handleOk.bind(this);
   }
-  handleSelect (e, bucketObj = {}) {
+  handleSelect (e, bucketObj) {
     e.preventDefault();
     if (bucketObj['name'] === this.props.bucketSelected) {
       return;
     }
+    this.selectBucketIntegrated(bucketObj);
+  }
+  selectBucketIntegrated (bucketObj = { name: '' }) {
+    // 集成处理选中操作
+    if (bucketObj['name'] === this.props.bucketSelected) return;
     this.props.selectBucket(bucketObj['name']).catch(err => {
       console.error('select bucket', err);
     });
-
-    let zone = bucketObj['zone'];
-    let domains = bucketObj['domains'];
+    let zone = bucketObj['zone'] || '';
+    let domains = bucketObj['domains'] || [];
     if (zone === '') {
       this.props.fetchBucketZone(bucketObj['name']).catch(err => {
         console.error('fetch bucket zone', err);
@@ -71,7 +77,7 @@ class FilterList extends Component {
     this.setState({ confirmLoading: true });
 
     let { waitToBeDeleted } = this.state;
-    let { bucketSelected, bucketList, selectBucket, deleteBucket, fetchBucketList } = this.props;
+    let { bucketSelected, bucketList, deleteBucket, fetchBucketList } = this.props;
     deleteBucket(waitToBeDeleted).then(res => {
       this.closeModal();
       openNotification('success', `Delete ${waitToBeDeleted} successfully!`);
@@ -82,7 +88,7 @@ class FilterList extends Component {
     }).then(() => {
       fetchBucketList().then(() => {
         if (waitToBeDeleted === bucketSelected) {
-          selectBucket(bucketList.length === 0 ? '': bucketList[0]['name']);
+          this.selectBucketIntegrated(bucketList.length === 0 ? null : bucketList[0]);
         }
       }).catch(err => {
         openNotification('error', `Fetch bucketList failed!`);
@@ -90,16 +96,15 @@ class FilterList extends Component {
       });
     })
   }
-
   componentDidMount () {
     const { bucketSelected, bucketList} = this.props;
     if (bucketSelected === '') {
       if (bucketList.length !== 0) {
-        this.props.selectBucket(bucketList[0]['name']);
+        this.selectBucketIntegrated(bucketList[0]);
       }
     } else {
       if (bucketList.length === 0 || getSelectedIndex(bucketList, bucketSelected) === -1) {
-        this.props.selectBucket('');
+        this.selectBucketIntegrated();
       }
     }
   }
