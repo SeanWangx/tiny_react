@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import NoBucket from '../../containers/NoBucket';
-import HasBucket from '../HasBucket';
+import HasBucket from '../../containers/HasBucket';
 import Upload from '../Upload';
 
 import './index.css';
@@ -40,7 +40,7 @@ class Content extends Component {
             : (
               this.state.view === 'upload'
                 ? <Upload onBack={this.toBack}/>
-                : <HasBucket bucket={this.state.bucket} onUpload={this.toUpload}/>
+                : <HasBucket bucket={this.state.bucket} toUpload={this.toUpload}/>
             )
         }
       </div>
