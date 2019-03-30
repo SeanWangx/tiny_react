@@ -12,7 +12,7 @@ const BucketItem = ({
 }) => {
   return show === true ? (
     <div className={`bucket-item${active ? ' active' : ''}`} onClick={onSelect}>
-      <div className="item-text">{text}</div>
+      <div className="item-text" title={text}>{text}</div>
       <div className="delete-btn">
         <Icon type="close-circle" onClick={onDelete}/>
       </div>
