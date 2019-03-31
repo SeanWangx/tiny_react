@@ -149,22 +149,30 @@ export function fetchBucketDomains (name) {
   return dispatch => {
     return fetchBucketDomainsAPI(name).then(domains => {
       dispatch(modifyBucketDomains({ name, domains }));
+      return Promise.resolve(domains);
     }).catch(err => {
       console.error(err);
       return Promise.reject(err);
     });
   }
 }
-export function selectBucket (name) {
-  return dispatch => {
-    dispatch(setBucketSelected(name)); 
-    if (!!name === false) {
-      // cancel http request, direct to set bucket source with empty object
+export function selectBucket (name = '') {
+  return (dispatch, getState) => {
+    dispatch(setBucketSelected(name));
+    if (name === '') {
       dispatch(setBucketSource({}));
-      return Promise.resolve();
     } else {
-      // get http request
-      return dispatch(fetchBucketSource({ bucket: name }));
+      const { bucketList } = getState();
+      const { zone = '', domains = [] } = bucketList.reduce((prev, cur) => {
+        if (prev === null && cur['name'] === name) {
+          return cur;
+        } else {
+          return prev;
+        }
+      }, null);
+      if (zone === '') dispatch(fetchBucketZone(name));
+      if (domains.length === 0) dispatch(fetchBucketDomains(name));
+      dispatch(fetchBucketSource({ bucket: name }));
     }
   }
 }
