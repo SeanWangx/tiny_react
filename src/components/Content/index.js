@@ -40,7 +40,7 @@ class Content extends Component {
             : (
               this.state.view === 'upload'
                 ? <Upload onBack={this.toBack}/>
-                : <HasBucket bucket={this.state.bucket} toUpload={this.toUpload}/>
+                : <HasBucket toUpload={this.toUpload}/>
             )
         }
       </div>

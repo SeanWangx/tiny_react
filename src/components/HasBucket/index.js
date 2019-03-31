@@ -41,7 +41,7 @@ const columns = [
     render: fsize => <span>{ fsizeConvert(fsize) }</span>
   },
   {
-    title: '最近更新事件',
+    title: '最近更新时间',
     dataIndex: 'putTime',
     key: 'putTime',
     render: putTime => <span>{ dateFormat(putTime / 10000) }</span>
@@ -53,7 +53,7 @@ class HasBucket extends Component {
     super(props);
     this.state = {
       prefixInput: '',
-      domain: props.domains[0] || '',
+      domain: '',
     };
   }
   emitEmpty = () => {
@@ -70,15 +70,22 @@ class HasBucket extends Component {
   onChangeDomain = (domain = '') => {
     this.setState({ domain });
   }
+  componentDidUpdate (prevProps, prevState) {
+    if (prevProps.domains !== this.props.domains) {
+      this.setState({ domain: this.props.domains[0] || '' });
+    }
+  }
   render () {
+    const {
+      prefixInput,
+      domain,
+    } = this.state;
     const {
       domains,
       sourceList,
       toUpload,
     } = this.props;
     let fsizeTotal = sourceList.reduce((acc, cur) => acc + (cur['fsize'] || 0), 0);
-    const { prefixInput, domain } = this.state;
-    const suffix = prefixInput ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
     return (
       <div className="has-bucket">
         <div className="feature-container">
@@ -90,22 +97,22 @@ class HasBucket extends Component {
             style={{width: '200px', position: 'absolute', right: '0', top: '0'}}
             size="small"
             placeholder="输入前缀搜索"
-            prefix={<Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} />}
-            suffix={suffix}
-            value={prefixInput}
-            onChange={this.onChangePrefix}
-            ref={node => this.prefixInput = node} />
+            prefix={ <Icon type="search" style={{ color: 'rgba(0,0,0,.25)' }} /> }
+            suffix={ prefixInput ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null }
+            value={ prefixInput }
+            onChange={ this.onChangePrefix }
+            ref={ node => this.prefixInput = node } />
         </div>
         <div className="feature-container">
           <span>外链默认域名：</span>
-          <Select defaultValue={ domain } size="small" style={{ width: 250 }} onChange={this.onChangeDomain}>
+          <Select size="small" style={{ width: 250 }} onChange={ this.onChangeDomain } value={ domain }>
             {
-              domains.map((v, index) => (<Option key={index} value={v}>{v}</Option>))
+              domains.map((v, index) => (<Option key={ index } value={ v }>{ v }</Option>))
             }
           </Select>
         </div>
         <div className="table-container">
-          <Table columns={columns} dataSource={sourceList} size="middle" />
+          <Table columns={ columns } dataSource={ sourceList } size="middle" />
         </div>
         {/* <p><input type="button" value="Upload" onClick={toUpload}/></p>
         <h1>{ bucket }</h1> */}
