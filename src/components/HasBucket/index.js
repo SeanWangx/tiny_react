@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Input, Icon } from 'antd';
+import { Table, Button, Input, Icon, Select } from 'antd';
 import { sizeCalculation, dateFormat } from '../../utils/tools';
 
 import './index.css';
+
+const { Option } = Select;
 
 const featureStyle = {
   margin: '0 0 0 10px',
@@ -64,7 +66,7 @@ class HasBucket extends Component {
   }
   render () {
     const {
-      // bucket,
+      domains,
       sourceList,
       toUpload,
     } = this.props;
@@ -88,7 +90,14 @@ class HasBucket extends Component {
             onChange={this.onChangePrefix}
             ref={node => this.prefixInput = node} />
         </div>
-        <div className="feature-container"></div>
+        <div className="feature-container">
+          <span>外链默认域名：</span>
+          <Select size="small" style={{ width: 250 }} onChange={null}>
+            {
+              domains.map((v, index) => (<Option key={index} value={v}>{v}</Option>))
+            }
+          </Select>
+        </div>
         <div className="table-container">
           <Table columns={columns} dataSource={sourceList} size="middle" />
         </div>
@@ -100,15 +109,15 @@ class HasBucket extends Component {
 }
 
 HasBucket.propTypes = {
-  // bucket: PropTypes.string,
   sourceList: PropTypes.array,
-  toUpload: PropTypes.func
+  toUpload: PropTypes.func,
+  domains: PropTypes.array,
 };
 
 HasBucket.defaultProps = {
-  // bucket: '',
   sourceList: [],
-  toUpload: null
+  toUpload: null,
+  domains: [],
 };
 
 export default HasBucket;
