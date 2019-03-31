@@ -51,7 +51,10 @@ const columns = [
 class HasBucket extends Component {
   constructor (props) {
     super(props);
-    this.state = { prefixInput: '' };
+    this.state = {
+      prefixInput: '',
+      domain: props.domains[0] || '',
+    };
   }
   emitEmpty = () => {
     this.prefixInput.focus();
@@ -64,6 +67,9 @@ class HasBucket extends Component {
     e.preventDefault();
     console.todo('refresh source list');
   }
+  onChangeDomain = (domain = '') => {
+    this.setState({ domain });
+  }
   render () {
     const {
       domains,
@@ -71,7 +77,7 @@ class HasBucket extends Component {
       toUpload,
     } = this.props;
     let fsizeTotal = sourceList.reduce((acc, cur) => acc + (cur['fsize'] || 0), 0);
-    const { prefixInput } = this.state;
+    const { prefixInput, domain } = this.state;
     const suffix = prefixInput ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null;
     return (
       <div className="has-bucket">
@@ -92,7 +98,7 @@ class HasBucket extends Component {
         </div>
         <div className="feature-container">
           <span>外链默认域名：</span>
-          <Select size="small" style={{ width: 250 }} onChange={null}>
+          <Select defaultValue={ domain } size="small" style={{ width: 250 }} onChange={this.onChangeDomain}>
             {
               domains.map((v, index) => (<Option key={index} value={v}>{v}</Option>))
             }
