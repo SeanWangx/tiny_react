@@ -6,11 +6,11 @@ const mapStateToProps = (state, ownProps) => {
   const sourceList = state.bucketSelected.sourceList;
   const bucket = state.bucketSelected.name;
   const domains = state.bucketList.reduce((prev, cur) => {
-    if (prev === null && cur['name'] === bucket) {
+    if (cur['name'] === bucket) {
       return cur['domains'];
     }
     return prev;
-  }, null);
+  }, []);
   return {
     sourceList,
     domains,

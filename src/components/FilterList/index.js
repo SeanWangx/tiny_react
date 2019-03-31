@@ -29,9 +29,38 @@ class FilterList extends Component {
     this.props.selectBucket(bucket);
   }
   onDeleteBucket = (bucket) => {
-    console.todo('onDeleteBucket', bucket);
+    this.setState({
+      visible: true,
+      loading: false,
+      toBeDeleted: bucket,
+    });
   }
-  componentDidMount () {
+  closeModal = () => {
+    this.setState({
+      visible: false,
+      loading: false,
+      toBeDeleted: '',
+    });
+  }
+  onOk = e => {
+    e.preventDefault();
+    this.setState({ loading: true });
+    this.props.deleteBucket(this.state.toBeDeleted).then(() => {
+      openNotification('success', `Delete ${this.state.toBeDeleted} successfully!`);
+      this.refreshBucketList();
+    }).catch(err => {
+      openNotification('error', `Delete ${this.state.toBeDeleted} failed!`);
+      console.error('Delete bucket failed!');
+    }).then(() => {
+      this.closeModal();
+    });
+  }
+  onCancel = e => {
+    e.preventDefault();
+    this.closeModal();
+  }
+  refreshBucketList = () => {
+    // container fetch bucket list and set active bucket
     this.props.fetchBucketList().then(() => {
       let isExit = this.props.bucketList.reduce((prev, cur) => {
         return prev === true ? prev : (cur['name'] === this.props.bucketSelected);
@@ -48,6 +77,9 @@ class FilterList extends Component {
     }).catch(err => {
       console.error(err);
     });
+  }
+  componentDidMount () {
+    this.refreshBucketList();
   }
   render () {
     return (
@@ -93,6 +125,7 @@ FilterList.propTypes = {
   ).isRequired,
   bucketSelected: PropTypes.string.isRequired,
   selectBucket: PropTypes.func.isRequired,
+  deleteBucket: PropTypes.func.isRequired,
 };
 
 FilterList.defaultProps = {
