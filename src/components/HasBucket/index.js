@@ -138,6 +138,13 @@ class HasBucket extends Component {
               domains.map((v, index) => (<Option key={ index } value={ v }>{ v }</Option>))
             }
           </Select>
+          <span style={ featureStyle }>
+            {
+              domains.length === 0 ? (
+                <Icon type="info-circle" style={{ cursor: 'pointer', color: 'red' }}/>
+              ) : null
+            }
+          </span>
         </div>
         <div className="table-container">
           <Table columns={ columns } dataSource={ sourceList } size="middle" />
