@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Input, Icon, Select } from 'antd';
+import { Table, Button, Input, Icon, Select, Divider } from 'antd';
 import { sizeCalculation, dateFormat } from '../../utils/tools';
 
 import './index.css';
@@ -45,6 +45,20 @@ const columns = [
     dataIndex: 'putTime',
     key: 'putTime',
     render: putTime => <span>{ dateFormat(putTime / 10000) }</span>
+  },
+  {
+    title: '操作',
+    key: 'action',
+    render: (text, record) => {
+      console.todo(text, record);
+      return (
+        <span>
+          <a href="javascript:;"><Icon type="eye" /></a>
+          <Divider type="vertical" />
+          <a href="javascript:;">Delete</a>
+        </span>
+      );
+    },
   }
 ];
 
