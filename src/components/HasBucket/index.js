@@ -59,13 +59,40 @@ class HasBucket extends Component {
   emitEmpty = () => {
     this.prefixInput.focus();
     this.setState({ prefixInput: '' });
+    this.fetchBucketSource({
+      bucket: this.props.bucketSelected,
+      prefix: ''
+    });
   }
   onChangePrefix = (e) => {
     this.setState({ prefixInput: e.target.value });
+    if (e.target.value === '') {
+      this.fetchBucketSource({
+        bucket: this.props.bucketSelected,
+        prefix: ''
+      });
+    }
+  }
+  onPressEnterPrefix = (e) => {
+    this.fetchBucketSource({
+      bucket: this.props.bucketSelected,
+      prefix: this.state.prefixInput
+    });
   }
   refeshSourceList = (e) => {
     e.preventDefault();
-    console.todo('refresh source list');
+    this.fetchBucketSource({
+      bucket: this.props.bucketSelected,
+      prefix: this.state.prefixInput
+    });
+  }
+  fetchBucketSource = ({ bucket, prefix }) => {
+    // separate the function for fetch bucket source
+    this.props.fetchBucketSource({ bucket, prefix }).then(() => {
+      // console.todo('Fetch bucket source list successfully!');
+    }).catch(err => {
+      console.error(err);
+    });
   }
   onChangeDomain = (domain = '') => {
     this.setState({ domain });
@@ -101,6 +128,7 @@ class HasBucket extends Component {
             suffix={ prefixInput ? <Icon type="close-circle" onClick={this.emitEmpty} /> : null }
             value={ prefixInput }
             onChange={ this.onChangePrefix }
+            onPressEnter={ this.onPressEnterPrefix }
             ref={ node => this.prefixInput = node } />
         </div>
         <div className="feature-container">
@@ -122,12 +150,15 @@ class HasBucket extends Component {
 }
 
 HasBucket.propTypes = {
+  bucketSelected: PropTypes.string,
   sourceList: PropTypes.array,
   toUpload: PropTypes.func,
   domains: PropTypes.array,
+  fetchBucketSource: PropTypes.func.isRequired,
 };
 
 HasBucket.defaultProps = {
+  bucketSelected: '',
   sourceList: [],
   toUpload: null,
   domains: [],

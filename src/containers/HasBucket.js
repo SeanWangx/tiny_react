@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import HasBucket from '../components/HasBucket';
-// import {} from '../store/actions';
+import { fetchBucketSource } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => {
   const sourceList = state.bucketSelected.sourceList;
@@ -12,12 +12,17 @@ const mapStateToProps = (state, ownProps) => {
     return prev;
   }, []);
   return {
+    bucketSelected: bucket,
     sourceList,
     domains,
   };
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => ({})
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  fetchBucketSource: payload => {
+    return dispatch(fetchBucketSource(payload));
+  }
+})
 
 export default connect(
   mapStateToProps,
