@@ -3,17 +3,15 @@ import HasBucket from '../components/HasBucket';
 import { fetchBucketSource } from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => {
-  const sourceList = state.bucketSelected.sourceList;
-  const bucket = state.bucketSelected.name;
+  const bucketSelected = state.bucketSelected.name;
   const domains = state.bucketList.reduce((prev, cur) => {
-    if (cur['name'] === bucket) {
+    if (cur['name'] === bucketSelected) {
       return cur['domains'];
     }
     return prev;
   }, []);
   return {
-    bucketSelected: bucket,
-    sourceList,
+    bucketSelected,
     domains,
   };
 }
