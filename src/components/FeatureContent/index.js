@@ -23,10 +23,6 @@ class FeatureContent extends Component {
       domain: '',
     };
   }
-  toUpload = (e) => {
-    e.preventDefault();
-    console.todo('to upload');
-  }
   refresh = (e) => {
     e.preventDefault();
     console.todo('refresh');
@@ -62,14 +58,14 @@ class FeatureContent extends Component {
     this.setState({ domain });
   }
   render () {
-    const { sourceList, domains, } = this.props;
+    const { sourceList, domains, toUpload, } = this.props;
     const { prefixInput, domain, } = this.state;
 
     let fsizeTotal = sourceList.reduce((acc, cur) => acc + (cur['fsize'] || 0), 0);
     return (
       <div>
         <div className="feature-bar">
-          <Button size="small" icon="cloud-upload" onClick={ this.toUpload }>Upload</Button>
+          <Button size="small" icon="cloud-upload" onClick={ toUpload }>Upload</Button>
           <Button style={ featureStyle } size="small" icon="reload" onClick={ this.refresh }>Refresh</Button>
           <span style={ featureStyle }>{`共${ sourceList.length }个文件`}</span>
           <span style={ featureStyle }>{`共${ fsizeConvert(fsizeTotal) }存储量`}</span>

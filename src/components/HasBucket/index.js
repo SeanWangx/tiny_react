@@ -27,7 +27,8 @@ class HasBucket extends Component {
     return (
       <div className="has-bucket">
         <div className="feature-container">
-          <FeatureContent />
+          <FeatureContent
+            toUpload={this.props.toUpload}/>
         </div>
         <div className="table-container">
           <TableContent />
