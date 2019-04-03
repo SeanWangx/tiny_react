@@ -67,6 +67,9 @@ class HasBucket extends Component {
   onChangeDomain = (domain = '') => {
     this.setState({ domain });
   }
+  onChangeType = (record) => {
+    console.todo(record);
+  }
   componentDidUpdate (prevProps, prevState) {
     if (prevProps.domains !== this.props.domains) {
       this.setState({ domain: this.props.domains[0] || '' });
@@ -161,7 +164,16 @@ class HasBucket extends Component {
                     }
                   </a>
                   <Divider type="vertical" />
-                  <Dropdown overlay={menu(this.props.bucketSelected, record['key'], !!this.state.domain)} trigger={['click']}>
+                  <Dropdown
+                    overlay={menu({
+                      bucket: this.props.bucketSelected,
+                      disabled: !this.state.domain,
+                      record,
+                      handlers: {
+                        onChangeType: e => this.onChangeType(record)
+                      }
+                    })}
+                    trigger={['click']}>
                     <a href="javascript:;">
                       More <Icon type="down" />
                     </a>
