@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Button, Input, Icon, Select, Divider, Menu, Dropdown } from 'antd';
+import { Table, Button, Input, Icon, Select, Divider, Dropdown } from 'antd';
 import { sizeCalculation, dateFormat } from '../../utils/tools';
-
+import menu from './menu';
 import './index.css';
 
 const { Option } = Select;
@@ -13,27 +13,10 @@ const featureStyle = {
   fontSize: '12px'
 };
 
-const ellipsisStyle = {
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  wordWrap: 'none',
-};
-
 const fsizeConvert = fsize => {
   let fsizeObj = sizeCalculation(fsize);
   return `${fsizeObj.size} ${fsizeObj.unit}`;
 };
-
-const menu = (text) => (
-  <Menu>
-    <Menu.Item>
-      text
-    </Menu.Item>
-    <Menu.Item>
-      Action 2
-    </Menu.Item>
-  </Menu>
-);
 
 class HasBucket extends Component {
   constructor (props) {
@@ -178,7 +161,7 @@ class HasBucket extends Component {
                     }
                   </a>
                   <Divider type="vertical" />
-                  <Dropdown overlay={menu('test')} trigger={['click']}>
+                  <Dropdown overlay={menu(this.props.bucketSelected, record['key'])} trigger={['click']}>
                     <a href="javascript:;">
                       More <Icon type="down" />
                     </a>
