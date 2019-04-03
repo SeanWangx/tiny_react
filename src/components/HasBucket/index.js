@@ -6,61 +6,23 @@ import { sizeCalculation, dateFormat } from '../../utils/tools';
 import './index.css';
 
 const { Option } = Select;
+const { Column } = Table;
 
 const featureStyle = {
   margin: '0 0 0 10px',
   fontSize: '12px'
 };
 
+const ellipsisStyle = {
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  wordWrap: 'none',
+};
+
 const fsizeConvert = fsize => {
   let fsizeObj = sizeCalculation(fsize);
   return `${fsizeObj.size} ${fsizeObj.unit}`;
 };
-
-const columns = [
-  {
-    title: '文件名',
-    dataIndex: 'key',
-    key: 'key',
-  },
-  {
-    title: '文件类型',
-    dataIndex: 'mimeType',
-    key: 'mimeType'
-  },
-  {
-    title: '存储类型',
-    dataIndex: 'type',
-    key: 'type',
-    render: type => <span>{ type === 0 ? '标准存储' : '低频存储' }</span>
-  },
-  {
-    title: '文件大小',
-    dataIndex: 'fsize',
-    key: 'fsize',
-    render: fsize => <span>{ fsizeConvert(fsize) }</span>
-  },
-  {
-    title: '最近更新时间',
-    dataIndex: 'putTime',
-    key: 'putTime',
-    render: putTime => <span>{ dateFormat(putTime / 10000) }</span>
-  },
-  {
-    title: '操作',
-    key: 'action',
-    render: (text, record) => {
-      console.todo(text, record);
-      return (
-        <span>
-          <a href="javascript:;"><Icon type="eye" /></a>
-          <Divider type="vertical" />
-          <a href="javascript:;">Delete</a>
-        </span>
-      );
-    },
-  }
-];
 
 class HasBucket extends Component {
   constructor (props) {
@@ -161,7 +123,59 @@ class HasBucket extends Component {
           </span>
         </div>
         <div className="table-container">
-          <Table columns={ columns } dataSource={ sourceList } size="middle" />
+          <Table dataSource={ sourceList } size="middle">
+          <Column
+            title="文件名"
+            dataIndex="key"
+            key="key" />
+          <Column
+            title="文件类型"
+            dataIndex="mimeType"
+            key="mimeType"
+            width={150}/>
+          <Column 
+            title="存储类型"
+            dataIndex="type"
+            key="type"
+            width={86}
+            render={type => (<span>{type === 0 ? '标准存储' : '低频存储'}</span>)}
+          />
+          <Column
+            title="文件大小"
+            dataIndex="fsize"
+            key="fsize"
+            width={110}
+            render={fsize => (<span>{ fsizeConvert(fsize) }</span>)}
+          />
+          <Column
+            title="最近更新时间"
+            dataIndex="putTime"
+            key="putTime"
+            width={200}
+            render={putTime => (<span>{ dateFormat(putTime / 10000) }</span>)}
+          />
+          <Column
+            title="操作"
+            key="action"
+            width={108}
+            render={(text, record) => {
+              console.todo(text, record);
+              return (
+                <span>
+                  <a href="javascript:;">
+                    {
+                      this.state.domain ? (<Icon type="eye" />) : (<Icon type="eye-invisible" />)
+                    }
+                  </a>
+                  <Divider type="vertical" />
+                  <a href="javascript:;">
+                    <Icon type="more" />
+                  </a>
+                </span>
+              );
+            }}
+          />
+          </Table>
         </div>
         {/* <p><input type="button" value="Upload" onClick={toUpload}/></p>
         <h1>{ bucket }</h1> */}
