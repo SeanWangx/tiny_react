@@ -3,8 +3,8 @@ import TableContent from '../components/TableContent';
 // import {} from '../store/actions';
 
 const mapStateToProps = (state, ownProps) => ({
-  bucketSelected: state.bucketSelected.sourceList,
-  sourceList: state.bucketSelected.name,
+  bucketSelected: state.bucketSelected.name,
+  sourceList: state.bucketSelected.sourceList,
 })
 
 const mapDispatchToProps = (dispatch, ownProps) => ({})
