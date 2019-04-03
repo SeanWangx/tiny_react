@@ -11,24 +11,12 @@ class HasBucket extends Component {
       domain: '',
     };
   }
-  refeshSourceList = (e) => {
-    // can seperate
-    e.preventDefault();
-    this.fetchBucketSource({
-      bucket: this.props.bucketSelected,
-      prefix: this.state.prefixInput
-    });
-  }
   fetchBucketSource = ({ bucket, prefix }) => {
-    // separate the function for fetch bucket source
     this.props.fetchBucketSource({ bucket, prefix }).then(() => {
       // console.todo('Fetch bucket source list successfully!');
     }).catch(err => {
       console.error(err);
     });
-  }
-  onChangeType = (record) => {
-    console.todo(record);
   }
   componentDidUpdate (prevProps, prevState) {
     if (prevProps.domains !== this.props.domains) {
@@ -52,16 +40,12 @@ class HasBucket extends Component {
 }
 
 HasBucket.propTypes = {
-  bucketSelected: PropTypes.string,
-  sourceList: PropTypes.array,
   toUpload: PropTypes.func,
   domains: PropTypes.array,
   fetchBucketSource: PropTypes.func.isRequired,
 };
 
 HasBucket.defaultProps = {
-  bucketSelected: '',
-  sourceList: [],
   toUpload: null,
   domains: [],
 };
