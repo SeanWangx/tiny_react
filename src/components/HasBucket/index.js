@@ -157,7 +157,7 @@ class HasBucket extends Component {
                 <span>
                   <a href="javascript:;">
                     {
-                      this.state.domain ? (<Icon type="eye" />) : (<Icon type="eye-invisible" />)
+                      this.state.domain ? (<Icon type="eye" />) : (<Icon style={{ color: 'rgba(0, 0, 0, .25)' }} type="eye-invisible" />)
                     }
                   </a>
                   <Divider type="vertical" />
