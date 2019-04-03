@@ -161,7 +161,7 @@ class HasBucket extends Component {
                     }
                   </a>
                   <Divider type="vertical" />
-                  <Dropdown overlay={menu(this.props.bucketSelected, record['key'])} trigger={['click']}>
+                  <Dropdown overlay={menu(this.props.bucketSelected, record['key'], !!this.state.domain)} trigger={['click']}>
                     <a href="javascript:;">
                       More <Icon type="down" />
                     </a>
