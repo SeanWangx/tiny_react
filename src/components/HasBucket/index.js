@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import FeatureContent from '../FeatureContent';
+import FeatureContent from '../../containers/FeatureContent';
 import TableContent from '../../containers/TableContent';
 import './index.css';
 
@@ -11,6 +11,10 @@ class HasBucket extends Component {
       domain: '',
     };
   }
+  onChangeDomain = (domain) => {
+    this.setState({ domain });
+  }
+
   fetchBucketSource = ({ bucket, prefix }) => {
     this.props.fetchBucketSource({ bucket, prefix }).then(() => {
       // console.todo('Fetch bucket source list successfully!');
@@ -28,7 +32,9 @@ class HasBucket extends Component {
       <div className="has-bucket">
         <div className="feature-container">
           <FeatureContent
-            toUpload={this.props.toUpload}/>
+            toUpload={this.props.toUpload}
+            domain={this.state.domain}
+            onChangeDomain={this.onChangeDomain}/>
         </div>
         <div className="table-container">
           <TableContent />
