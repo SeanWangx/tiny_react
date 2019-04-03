@@ -24,33 +24,24 @@ class FeatureContent extends Component {
   }
   refresh = (e) => {
     e.preventDefault();
-    console.todo('refresh');
+    this.props.onFetch(this.state.prefixInput);
   }
   emitEmpty = (e) => {
-    console.todo('emitEmpty', e);
+    e.preventDefault();
     this.prefixInput.focus();
     this.setState({ prefixInput: '' });
-    /* this.fetchBucketSource({
-      bucket: this.props.bucketSelected,
-      prefix: ''
-    }); */
+    this.props.onFetch();
   }
   onChangePrefix = (e) => {
-    console.todo('onChangePrefix', e);
+    e.preventDefault();
     this.setState({ prefixInput: e.target.value });
     if (e.target.value === '') {
-      /* this.fetchBucketSource({
-        bucket: this.props.bucketSelected,
-        prefix: ''
-      }); */
+      this.props.onFetch();
     }
   }
   onPressEnterPrefix = (e) => {
-    console.todo('onPressEnterPrefix', e);
-    /* this.fetchBucketSource({
-      bucket: this.props.bucketSelected,
-      prefix: this.state.prefixInput
-    }); */
+    e.preventDefault();
+    this.props.onFetch(this.state.prefixInput);
   }
   render () {
     let fsizeTotal = this.props.sourceList.reduce((acc, cur) => acc + (cur['fsize'] || 0), 0);
@@ -99,6 +90,7 @@ FeatureContent.propTypes = {
   domains: PropTypes.array,
   // from own props
   toUpload: PropTypes.func,
+  onFetch: PropTypes.func,
   onChangeDomain: PropTypes.func,
   domain: PropTypes.string,
 };
@@ -108,6 +100,7 @@ FeatureContent.defaultProps = {
   domains: [],
 
   toUpload: null,
+  onFetch: null,
   onChangeDomain: null,
   domain: '',
 };

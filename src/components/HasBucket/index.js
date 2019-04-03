@@ -14,9 +14,11 @@ class HasBucket extends Component {
   onChangeDomain = (domain) => {
     this.setState({ domain });
   }
-
-  fetchBucketSource = ({ bucket, prefix }) => {
-    this.props.fetchBucketSource({ bucket, prefix }).then(() => {
+  fetchBucketSource = (prefix = '') => {
+    this.props.fetchBucketSource({
+      bucket: this.props.bucketSelected,
+      prefix,
+    }).then(() => {
       // console.todo('Fetch bucket source list successfully!');
     }).catch(err => {
       console.error(err);
@@ -34,7 +36,8 @@ class HasBucket extends Component {
           <FeatureContent
             toUpload={this.props.toUpload}
             domain={this.state.domain}
-            onChangeDomain={this.onChangeDomain}/>
+            onChangeDomain={this.onChangeDomain}
+            onFetch={this.fetchBucketSource}/>
         </div>
         <div className="table-container">
           <TableContent />
@@ -47,14 +50,18 @@ class HasBucket extends Component {
 }
 
 HasBucket.propTypes = {
-  toUpload: PropTypes.func,
+  // from containers props
+  bucketSelected: PropTypes.string,
   domains: PropTypes.array,
   fetchBucketSource: PropTypes.func.isRequired,
+  // from own props
+  toUpload: PropTypes.func,
 };
 
 HasBucket.defaultProps = {
-  toUpload: null,
+  bucketSelected: '',
   domains: [],
+  toUpload: null,
 };
 
 export default HasBucket;
