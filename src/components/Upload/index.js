@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Icon } from 'antd';
 
-const Upload = ({ onBack }) => (
-  <div>
-    <h1>Upload</h1>
-    <p><input type="button" value="Back" onClick={onBack}/></p>
-  </div>
-);
+import './index.css';
+
+class Upload extends Component {
+  render () {
+    return (
+      <div className="upload-container">
+        <div className="upload-title">
+          <span>上传文件</span>
+          <Icon type="close" className="upload-close" onClick={this.props.onBack} />
+        </div>
+        <div className="upload-content">
+          Upload Content
+        </div>
+      </div>
+    );
+  }
+}
 
 Upload.propTypes = {
   onBack: PropTypes.func
