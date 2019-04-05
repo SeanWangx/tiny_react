@@ -28,6 +28,7 @@ class HasBucket extends Component {
     if (this.state.domain === '') {
       this.setState({ domain: this.props.domains[0] || '' });
     }
+    this.fetchBucketSource();
   }
   componentDidUpdate (prevProps, prevState) {
     if (prevProps.domains !== this.props.domains) {
