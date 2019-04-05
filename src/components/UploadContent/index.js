@@ -53,6 +53,12 @@ class UploadContent extends Component {
     });
     return true;
   }
+  toTip = (e) => {
+    e.preventDefault();
+    console.todo('toTip');
+    // window.open('http://www.cnblogs.com/liumengdie/', '_blank');
+    // shell.openExternal('https://developer.qiniu.com/sdk#official-tool');
+  }
   componentDidMount () {
     this.setState({
       uploadURL: `http://${ZONE_UPLOAD[this.props.zone]}` || '',
@@ -74,7 +80,7 @@ class UploadContent extends Component {
               <Button type="primary">
                 选择文件
               </Button>
-              <p className="upload-tip">网页不能上传超过 500M 的文件，大文件请<span onClick={null}> 使用工具 </span>上传</p>
+              <p onClick={e => {e.preventDefault();e.stopPropagation()}} className="upload-tip">网页不能上传超过 500M 的文件，大文件请<span onClick={this.toTip}> 使用工具 </span>上传</p>
             </Upload>
           </div>
           <div className="upload-config">
