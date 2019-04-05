@@ -24,6 +24,11 @@ class HasBucket extends Component {
       console.error(err);
     });
   }
+  componentDidMount () {
+    if (this.state.domain === '') {
+      this.setState({ domain: this.props.domains[0] || '' });
+    }
+  }
   componentDidUpdate (prevProps, prevState) {
     if (prevProps.domains !== this.props.domains) {
       this.setState({ domain: this.props.domains[0] || '' });
