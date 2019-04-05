@@ -40,6 +40,23 @@ class QiNiu {
       return null;
     }
   }
+
+  getUploadToken ({ scope, fileType }) {
+    if (!!this.secretKey && !!this.accessKey) {
+      let putPolicy = JSON.stringify({
+        deadline: new Date().getTime() + 3600,
+        scope,
+        fileType
+      });
+      let encodedPutPolicy = urlSafeBase64Encode(putPolicy);
+      let sign = Crypto.createHmac('sha1', this.secretKey).update(encodedPutPolicy).digest();
+      let encodedSign = urlSafeBase64Encode(sign);
+      let uploadToken = `${this.accessKey}:${encodedSign}:${encodedPutPolicy}`;
+      return uploadToken;
+    } else {
+      return null;
+    }
+  }
 }
 
 let unique;

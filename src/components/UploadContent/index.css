@@ -1,0 +1,88 @@
+.upload-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+}
+.upload-title {
+  flex: 0 0 100%;
+  display: block;
+  position: relative;
+  box-sizing: content-box;
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  padding: 30px 0;
+  line-height: 22px;
+  font-weight: 400;
+  font-size: 16px;
+}
+.upload-close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #d3d3d3;
+  font-size: 40px;
+  cursor: pointer;
+}
+.upload-close:hover {
+  color: #999;
+}
+.upload-content {
+  flex: 1;
+  display: flex;
+  flex-wrap: nowrap;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
+  width: 100%;
+  height: calc(100% - 82px);
+  text-align: left;
+}
+.upload-body {
+  flex: 0 0 60%;
+  width: 60%;
+  height: 100%;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.upload-tip {
+  font-size: 12px;
+  color: #606266;
+  margin: 7px 0 12px 0 !important;
+}
+.upload-tip > span {
+  cursor: pointer;
+  color: #409EFF;
+  font-weight: 800;
+}
+.upload-config {
+  flex: 0 0 40%;
+  width: 40%;
+  height: 100%;
+  margin: 0;
+  padding: 0 0 0 20px;
+  box-sizing: border-box;
+}
+.upload-config-item {
+  font-size: 14px;
+  margin: 0 0 20px 0;
+}
+.upload-config-item > div {
+  margin: 0 0 10px 0;
+}
+.upload-config-item > div > p {
+  margin: 0;
+  font-size: 14px;
+  height: 22px;
+  line-height: 22px;
+}
+
