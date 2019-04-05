@@ -45,7 +45,8 @@ class HasBucket extends Component {
             onFetch={this.fetchBucketSource}/>
         </div>
         <div className="table-container">
-          <TableContent />
+          <TableContent
+            domain={this.state.domain}/>
         </div>
         {/* <p><input type="button" value="Upload" onClick={toUpload}/></p>
         <h1>{ bucket }</h1> */}
