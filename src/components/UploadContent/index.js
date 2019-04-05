@@ -12,6 +12,11 @@ class UploadContent extends Component {
     this.state = {
       ctype: 0,
       prefix: '',
+      uploadURL: '', // 上传路径
+      uploadData: {
+        key: '', // 文件名
+        token: '',
+      }, // 上传参数
     };
   }
   onChangeCtype = (e) => {
@@ -19,6 +24,9 @@ class UploadContent extends Component {
   }
   onChangePrefix = (e) => {
     this.setState({ prefix: e.target.value });
+  }
+  componentDidMount () {
+    console.todo('upload mount');
   }
   render () {
     return (
@@ -29,10 +37,13 @@ class UploadContent extends Component {
         </div>
         <div className="upload-content">
           <div className="upload-body">
-            <Upload>
-              <Button>
-                <Icon type="upload" /> Click to Upload
+            <Upload
+              data={null}
+              action={null}>
+              <Button type="primary">
+                选择文件
               </Button>
+              <p className="upload-tip">网页不能上传超过 500M 的文件，大文件请<span onClick={null}> 使用工具 </span>上传</p>
             </Upload>
           </div>
           <div className="upload-config">

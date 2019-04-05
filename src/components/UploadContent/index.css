@@ -48,7 +48,21 @@
   flex: 0 0 60%;
   width: 60%;
   height: 100%;
-  background-color: #ccc;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.upload-tip {
+  font-size: 12px;
+  color: #606266;
+  margin: 7px 0 12px 0 !important;
+}
+.upload-tip > span {
+  cursor: pointer;
+  color: #409EFF;
+  font-weight: 800;
 }
 .upload-config {
   flex: 0 0 40%;
