@@ -24,6 +24,12 @@ class HasBucket extends Component {
       console.error(err);
     });
   }
+  componentDidMount () {
+    if (this.state.domain === '') {
+      this.setState({ domain: this.props.domains[0] || '' });
+    }
+    this.fetchBucketSource();
+  }
   componentDidUpdate (prevProps, prevState) {
     if (prevProps.domains !== this.props.domains) {
       this.setState({ domain: this.props.domains[0] || '' });
@@ -40,7 +46,8 @@ class HasBucket extends Component {
             onFetch={this.fetchBucketSource}/>
         </div>
         <div className="table-container">
-          <TableContent />
+          <TableContent
+            domain={this.state.domain}/>
         </div>
         {/* <p><input type="button" value="Upload" onClick={toUpload}/></p>
         <h1>{ bucket }</h1> */}
