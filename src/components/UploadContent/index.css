@@ -48,6 +48,7 @@
   flex: 0 0 60%;
   width: 60%;
   height: 100%;
+  background-color: #ccc;
 }
 .upload-config {
   flex: 0 0 40%;

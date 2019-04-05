@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Icon, Radio, Input } from 'antd';
+import { Icon, Radio, Input, Upload, Button } from 'antd';
 
 import './index.css';
 
 const RadioGroup = Radio.Group;
 
-class Upload extends Component {
+class UploadContent extends Component {
   constructor (props) {
     super(props);
     this.state = {
@@ -29,7 +29,11 @@ class Upload extends Component {
         </div>
         <div className="upload-content">
           <div className="upload-body">
-            Upload Body
+            <Upload>
+              <Button>
+                <Icon type="upload" /> Click to Upload
+              </Button>
+            </Upload>
           </div>
           <div className="upload-config">
             <div className="upload-config-item">
@@ -58,12 +62,12 @@ class Upload extends Component {
   }
 }
 
-Upload.propTypes = {
+UploadContent.propTypes = {
   onBack: PropTypes.func
 };
 
-Upload.defaultProps = {
+UploadContent.defaultProps = {
   onBack: null
 };
 
-export default Upload;
+export default UploadContent;

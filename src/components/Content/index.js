@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import NoBucket from '../../containers/NoBucket';
 import HasBucket from '../../containers/HasBucket';
-import Upload from '../Upload';
+import UploadContent from '../../containers/UploadContent';
 
 import './index.css';
 
@@ -39,7 +39,7 @@ class Content extends Component {
             ? <NoBucket />
             : (
               this.state.view === 'upload'
-                ? <Upload onBack={this.toBack}/>
+                ? <UploadContent onBack={this.toBack}/>
                 : <HasBucket toUpload={this.toUpload}/>
             )
         }
