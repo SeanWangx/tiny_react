@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Radio, Input, Upload, Button } from 'antd';
+import qiniu from '../../utils/qiniu';
 
 import './index.css';
 
 const RadioGroup = Radio.Group;
+
+const ZONE_UPLOAD = {
+  'z0': 'up.qiniup.com',
+  'z1': 'up-z1.qiniup.com',
+  'z2': 'up-z2.qiniup.com',
+  'na0': 'up-na0.qiniup.com',
+  'as0': 'up-as0.qiniup.com'
+};
 
 class UploadContent extends Component {
   constructor (props) {
@@ -25,8 +34,29 @@ class UploadContent extends Component {
   onChangePrefix = (e) => {
     this.setState({ prefix: e.target.value });
   }
+  beforeUpload = (file) => {
+    if (file.size && (file.size > 1024 * 1024 * 500)) {
+      console.error('文件大小超出尺寸，上传失败！');
+      return false;
+    }
+    let key = this.state.prefix + file.name;
+    let options = {
+      scope: `${this.props.bucketSelected}:${key}`,
+      fileType: this.state.ctype,
+    };
+    let uploadToken = qiniu.getUploadToken(options);
+    this.setState({
+      uploadData: {
+        key,
+        token: uploadToken,
+      }
+    });
+    return true;
+  }
   componentDidMount () {
-    console.todo('upload mount');
+    this.setState({
+      uploadURL: `http://${ZONE_UPLOAD[this.props.zone]}` || '',
+    });
   }
   render () {
     return (
@@ -38,8 +68,9 @@ class UploadContent extends Component {
         <div className="upload-content">
           <div className="upload-body">
             <Upload
-              data={null}
-              action={null}>
+              data={this.state.uploadData}
+              action={this.state.uploadURL}
+              beforeUpload={this.beforeUpload}>
               <Button type="primary">
                 选择文件
               </Button>
@@ -74,11 +105,15 @@ class UploadContent extends Component {
 }
 
 UploadContent.propTypes = {
-  onBack: PropTypes.func
+  // from containers props
+  bucketSelected: PropTypes.string.isRequired,
+  zone: PropTypes.string.isRequired,
+  // from own props
+  onBack: PropTypes.func,
 };
 
 UploadContent.defaultProps = {
-  onBack: null
+  onBack: null,
 };
 
 export default UploadContent;
