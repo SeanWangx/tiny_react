@@ -14,6 +14,15 @@
   width: 100%;
   height: 68px;
 }
+.feature-bar {
+  display: block;
+  width: 100%;
+  height: 24px;
+  margin: 0 0 10px 0;
+  padding: 0;
+  position: relative;
+  line-height: 24px;
+}
 .table-container {
   display: block;
   width: 100%;
