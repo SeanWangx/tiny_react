@@ -126,3 +126,26 @@ export function fetchBucketSource ({
     return Promise.resolve(res['data']['items'] || []);
   });
 }
+/**
+ * 修改文件存储类型
+ * @param {*} bucket 目标存储空间名称
+ * @param {*} key 目标资源文件名
+ * @param {*} type 指定文件存储类型
+ */
+export function changeFileType ({
+  bucket,
+  key,
+  type
+}) {
+  let entry = `${bucket}:${key}`; 
+  let encodedEntryURI = urlSafeBase64Encode(entry);
+  let uri = `/chtype/${encodedEntryURI}/type/${type}`;
+  let accessToken = qiniu.getAccessToken(uri);
+  if (accessToken === null) return Promise.reject('Mac key missing!'); 
+  return axios.post(`http://rs.qiniu.com${uri}`, null, {
+    method: 'post',
+    headers: {
+      'Authorization': `QBox ${accessToken}`,
+    },
+  });
+}

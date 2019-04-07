@@ -8,7 +8,29 @@ const menu = ({
   handlers = {}
 }) => {
   const handleClick = (e) => {
-    console.todo(e);
+    switch (e['key']) {
+      case '1':
+        console.todo('下载文件');
+        break;
+      case '2':
+        console.todo('复制外链');
+        break;
+      case '3':
+        console.todo('移动文件');
+        break;
+      case '4':
+        console.todo('删除文件');
+        break;
+      case '5':
+        handlers['onChangeType']({
+          key: record['key'],
+          type: 1 - record['type'],
+        });
+        break;
+      default:
+        console.error('Error option!');
+        break;
+    }
   };
   return (
     <Menu onClick={handleClick}>
