@@ -35,6 +35,9 @@ class TableContent extends Component {
       console.error(err);
     });
   }
+  onDeleteFile = (key) => {
+    console.todo('onDeleteFile', key);
+  }
   render () {
     const { sourceList } = this.props;
     return (
@@ -88,6 +91,7 @@ class TableContent extends Component {
                     disabled: !this.props.domain,
                     record,
                     handlers: {
+                      onDeleteFile: this.onDeleteFile,
                       onChangeType: this.onChangeType,
                     }
                   })}

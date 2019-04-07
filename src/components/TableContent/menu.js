@@ -19,7 +19,7 @@ const menu = ({
         console.todo('移动文件');
         break;
       case '4':
-        console.todo('删除文件');
+        handlers['onDeleteFile'](record['key']);
         break;
       case '5':
         handlers['onChangeType']({
