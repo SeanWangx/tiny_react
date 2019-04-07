@@ -25,7 +25,7 @@ class HasBucket extends Component {
     };
   }
   refresh = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     this.fetchBucketSource(this.state.prefixInput);
   }
   emitEmpty = (e) => {
@@ -109,7 +109,8 @@ class HasBucket extends Component {
         </div>
         <div className="table-container">
           <TableContent
-            domain={this.state.domain}/>
+            domain={this.state.domain}
+            onRefresh={this.refresh}/>
         </div>
       </div>
     );

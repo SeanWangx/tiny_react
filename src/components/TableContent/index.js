@@ -27,7 +27,11 @@ class TableContent extends Component {
       bucket: this.props.bucketSelected,
       key,
       type,
-    }).then().catch(err => {
+    }).then(() => {
+      if (this.props.onRefresh) {
+        this.props.onRefresh();
+      }
+    }).catch(err => {
       console.error(err);
     });
   }
@@ -102,16 +106,21 @@ class TableContent extends Component {
 }
 
 TableContent.propTypes = {
+  // from container props
   sourceList: PropTypes.array,
-  domain: PropTypes.string,
   bucketSelected: PropTypes.string,
   changeFileType: PropTypes.func.isRequired,
+  // from own props
+  domain: PropTypes.string,
+  onRefresh: PropTypes.func,
 };
 
 TableContent.defaultProps = {
   sourceList: [],
-  domain: '',
   bucketSelected: '',
+
+  domain: '',
+  onRefresh: null,
 };
 
 export default TableContent;
