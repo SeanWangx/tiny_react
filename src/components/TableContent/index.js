@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Icon, Dropdown, Divider } from 'antd';
+import { Table, Icon, Dropdown, Divider, Modal } from 'antd';
 import menu from './menu';
 import { sizeCalculation, dateFormat } from '../../utils/tools';
 // import './index.css';
@@ -13,6 +13,15 @@ const fsizeConvert = fsize => {
 };
 
 class TableContent extends Component {
+  onChangeType = ({key, type}) => {
+    Modal.confirm({
+      title: '提示',
+      content: `是否将【${key}】转为${type === 0 ? '标准存储' : '低频存储'}?`,
+      cancelText: '取消',
+      okText: '确认',
+      onOk: () => { console.todo('ok'); },
+    });
+  }
   render () {
     const { sourceList } = this.props;
     return (
@@ -66,7 +75,7 @@ class TableContent extends Component {
                     disabled: !this.props.domain,
                     record,
                     handlers: {
-                      onChangeType: e => { if (e) e.preventDefault(); this.onChangeType(record); }
+                      onChangeType: this.onChangeType,
                     }
                   })}
                   trigger={['click']}>
