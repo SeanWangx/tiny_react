@@ -36,7 +36,25 @@ class TableContent extends Component {
     });
   }
   onDeleteFile = (key) => {
-    console.todo('onDeleteFile', key);
+    Modal.confirm({
+      title: '提示',
+      content: `是否确认删除: ${key} ?`,
+      cancelText: '取消',
+      okText: '确认',
+      onOk: () => { this.deleteFile(key); },
+    });
+  }
+  deleteFile = (key) => {
+    this.props.deleteFile({
+      bucket: this.props.bucketSelected,
+      key,
+    }).then(() => {
+      if (this.props.onRefresh) {
+        this.props.onRefresh();
+      }
+    }).catch(err => {
+      console.error(err);
+    });
   }
   render () {
     const { sourceList } = this.props;
@@ -114,6 +132,7 @@ TableContent.propTypes = {
   sourceList: PropTypes.array,
   bucketSelected: PropTypes.string,
   changeFileType: PropTypes.func.isRequired,
+  deleteFile: PropTypes.func.isRequired,
   // from own props
   domain: PropTypes.string,
   onRefresh: PropTypes.func,

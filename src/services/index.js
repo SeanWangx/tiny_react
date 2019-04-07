@@ -141,7 +141,7 @@ export function changeFileType ({
   let encodedEntryURI = urlSafeBase64Encode(entry);
   let uri = `/chtype/${encodedEntryURI}/type/${type}`;
   let accessToken = qiniu.getAccessToken(uri);
-  if (accessToken === null) return Promise.reject('Mac key missing!'); 
+  if (accessToken === null) return Promise.reject('Mac key missing!');
   return axios.post(`http://rs.qiniu.com${uri}`, null, {
     method: 'post',
     headers: {
@@ -162,6 +162,7 @@ export function deleteFile ({
   let encodedEntryURI = urlSafeBase64Encode(entry);
   let uri = `/delete/${encodedEntryURI}`;
   let accessToken = qiniu.getAccessToken(uri);
+  if (accessToken === null) return Promise.reject('Mac key missing!');
   return axios.post(`http://rs.qiniu.com${uri}`, null, {
     method: 'post',
     headers: {
