@@ -19,7 +19,16 @@ class TableContent extends Component {
       content: `是否将【${key}】转为${type === 0 ? '标准存储' : '低频存储'}?`,
       cancelText: '取消',
       okText: '确认',
-      onOk: () => { console.todo('ok'); },
+      onOk: () => { this.changeFileType({key, type}); },
+    });
+  }
+  changeFileType = ({key, type}) => {
+    this.props.changeFileType({
+      bucket: this.props.bucketSelected,
+      key,
+      type,
+    }).then().catch(err => {
+      console.error(err);
     });
   }
   render () {
@@ -96,6 +105,7 @@ TableContent.propTypes = {
   sourceList: PropTypes.array,
   domain: PropTypes.string,
   bucketSelected: PropTypes.string,
+  changeFileType: PropTypes.func.isRequired,
 };
 
 TableContent.defaultProps = {

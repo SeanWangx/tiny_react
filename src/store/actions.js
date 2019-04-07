@@ -208,6 +208,6 @@ export function changeFileType({
   type, // 指定资源存储类型
 }) {
   return dispatch => {
-    return changeFileType({bucket, key, type});
+    return changeFileTypeAPI({bucket, key, type});
   }
 }
