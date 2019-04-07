@@ -149,3 +149,23 @@ export function changeFileType ({
     },
   });
 }
+/**
+ * 删除资源文件
+ * @param {*} bucket 目标存储空间名
+ * @param {*} key 目标资源名
+ */
+export function deleteFile ({
+  bucket,
+  key,
+}) {
+  let entry = `${bucket}:${key}`;
+  let encodedEntryURI = urlSafeBase64Encode(entry);
+  let uri = `/delete/${encodedEntryURI}`;
+  let accessToken = qiniu.getAccessToken(uri);
+  return axios.post(`http://rs.qiniu.com${uri}`, null, {
+    method: 'post',
+    headers: {
+      'Authorization': `QBox ${accessToken}`
+    }
+  });
+}
