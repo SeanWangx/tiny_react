@@ -7,6 +7,7 @@ import {
   fetchBucketDomains as fetchBucketDomainsAPI,
   fetchBucketSource as fetchBucketSourceAPI,
   changeFileType as changeFileTypeAPI,
+  deleteFile as deleteFileAPI,
 } from '../services';
 
 /**
@@ -209,5 +210,13 @@ export function changeFileType({
 }) {
   return dispatch => {
     return changeFileTypeAPI({bucket, key, type});
+  }
+}
+export function deleteFile({
+  bucket,
+  key,
+}) {
+  return dispatch => {
+    return deleteFileAPI({ bucket, key });
   }
 }
