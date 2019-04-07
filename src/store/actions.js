@@ -6,6 +6,7 @@ import {
   fetchBucketZone as fetchBucketZoneAPI,
   fetchBucketDomains as fetchBucketDomainsAPI,
   fetchBucketSource as fetchBucketSourceAPI,
+  changeFileType as changeFileTypeAPI,
 } from '../services';
 
 /**
@@ -200,4 +201,13 @@ export function fetchBucketSource ({
       return Promise.reject(err);
     });
   };
+}
+export function changeFileType({
+  bucket, // 存储空间名称
+  key, // 资源名称
+  type, // 指定资源存储类型
+}) {
+  return dispatch => {
+    return changeFileType({bucket, key, type});
+  }
 }
