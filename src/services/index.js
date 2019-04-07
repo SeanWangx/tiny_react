@@ -141,11 +141,32 @@ export function changeFileType ({
   let encodedEntryURI = urlSafeBase64Encode(entry);
   let uri = `/chtype/${encodedEntryURI}/type/${type}`;
   let accessToken = qiniu.getAccessToken(uri);
-  if (accessToken === null) return Promise.reject('Mac key missing!'); 
+  if (accessToken === null) return Promise.reject('Mac key missing!');
   return axios.post(`http://rs.qiniu.com${uri}`, null, {
     method: 'post',
     headers: {
       'Authorization': `QBox ${accessToken}`,
     },
+  });
+}
+/**
+ * 删除资源文件
+ * @param {*} bucket 目标存储空间名
+ * @param {*} key 目标资源名
+ */
+export function deleteFile ({
+  bucket,
+  key,
+}) {
+  let entry = `${bucket}:${key}`;
+  let encodedEntryURI = urlSafeBase64Encode(entry);
+  let uri = `/delete/${encodedEntryURI}`;
+  let accessToken = qiniu.getAccessToken(uri);
+  if (accessToken === null) return Promise.reject('Mac key missing!');
+  return axios.post(`http://rs.qiniu.com${uri}`, null, {
+    method: 'post',
+    headers: {
+      'Authorization': `QBox ${accessToken}`
+    }
   });
 }
